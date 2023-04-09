@@ -16,24 +16,27 @@ CREATE TABLE Subscriber (
 	[sub_id] INT IDENTITY(1,1) PRIMARY KEY, /* id */
 
 	[sub_name] NVARCHAR(64) NOT NULL, /* surname, name, patronymic */
-	[sub_passport_id] INT NOT NULL, /* link to: PASSPORT */
+	[sub_passport_s] VARCHAR(4) NULL DEFAULT NULL, /* link to: PASSPORT */
+	[sub_passport_n] VARCHAR(6) NULL DEFAULT NULL, /* link to: PASSPORT */
 	
 	[sub_joining_date] DATE NULL, /* start date of using the operator's services */
-	[sub_tariff] INT NULL /* current tariff */
+	[sub_tariff] INT NULL, /* current tariff */
 );
 
 
 /* Passport entity */
 DROP TABLE IF EXISTS [Passport];
 CREATE TABLE Passport (
-	[pss_series] INT NOT NULL, /* Passport series */
-	[pss_number] INT NOT NULL, /* Passport number */
-	[pss_issued_by] NVARCHAR(64) NOT NULL, /* Who issued the passport */
-	[pss_issued_date] DATE NOT NULL, /* When the passport was issued */
-	[pss_division_code] VARCHAR(10) NOT NULL, /* The code of the organization that issued the passport */
-	[pss_date_of_birth] DATE NOT NULL, /* The date of birth of the passport holder */
-	PRIMARY KEY ([pss_series], [pss_number])
+	[ppt_series] VARCHAR(4) NOT NULL, /* Passport series */
+	[ppt_number] VARCHAR(6) NOT NULL, /* Passport number */
+	[ppt_issued_by] NVARCHAR(64) NOT NULL, /* Who issued the passport */
+	[ppt_issued_date] DATE NOT NULL, /* When the passport was issued */
+	[ppt_division_code] VARCHAR(10) NOT NULL, /* The code of the organization that issued the passport */
+	[ppt_date_of_birth] DATE NOT NULL, /* The date of birth of the passport holder */
+	CONSTRAINT ppt_ser_num PRIMARY KEY CLUSTERED ([ppt_series], [ppt_number])
 );
+
+ALTER TABLE [Subscriber] ADD CONSTRAINT sub_pptHolds FOREIGN KEY ([sub_passport_s], [sub_passport_n]) REFERENCES Passport([ppt_series], [ppt_number]);
 
 
 /* Tariff entity */
