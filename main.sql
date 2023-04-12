@@ -76,3 +76,16 @@ CREATE TABLE Sellings (
 	
 	[sll_date] DATETIME NULL, /* date and time when tariff was purchased */
 );
+
+
+
+/* Billings entity */
+DROP TABLE IF EXISTS [Billings];
+CREATE TABLE Billings (
+	[bll_id] INT IDENTITY(1,1) PRIMARY KEY, /* id */
+	 
+	[bll_sub_id] INT NOT NULL, /* subscriber who purchased a tariff */
+	[bll_tar_id] INT NOT NULL, /* tariff that was purchased */
+	 
+	[bll_date] DATETIME NULL, /* date and time when tariff was purchased */
+);
