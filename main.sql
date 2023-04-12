@@ -11,8 +11,17 @@ USE MobileOperator_by_DmitryBalabanov;
 
 
 /* Own types */
+DROP TYPE IF EXISTS PHONE
+DROP TYPE IF EXISTS PASSPORTDATA
+DROP TYPE IF EXISTS PACKAGE
+
 CREATE TYPE PHONE FROM VARCHAR(16) NOT NULL;
-CREATE TYPE PASSPORT FROM VARCHAR(11) NOT NULL;
+CREATE TYPE PASSPORTDATA FROM VARCHAR(11) NOT NULL;
+CREATE TYPE PACKAGE AS TABLE (
+	[pak_minutes] INT NOT NULL,
+	[pak_sms] INT NOT NULL,
+	[pak_internet] REAL NOT NULL
+)
 
 GO
 
@@ -23,7 +32,7 @@ CREATE TABLE Subscriber (
 	[sub_phone_number] PHONE PRIMARY KEY,
 
 	[sub_name] NVARCHAR(64) NOT NULL,
-	[sub_passport] PASSPORT NOT NULL,
+	[sub_passport] PASSPORTDATA NOT NULL,
 	
 	[sub_joining_date] DATE NULL DEFAULT NULL,
 	[sub_billing_date] DATE NULL DEFAULT NULL,
@@ -40,7 +49,7 @@ CREATE TABLE Subscriber (
 /* Passport entity */
 DROP TABLE IF EXISTS [Passport];
 CREATE TABLE Passport (
-	[ppt_series_number] PASSPORT PRIMARY KEY,
+	[ppt_series_number] PASSPORTDATA PRIMARY KEY,
 	[ppt_issued_by] NVARCHAR(64) NOT NULL,
 	[ppt_issued_date] DATE NOT NULL,
 	[ppt_division_code] VARCHAR(7) NOT NULL,
