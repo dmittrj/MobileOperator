@@ -110,3 +110,15 @@ CREATE TABLE Billings (
 	 
 	[bll_date] DATETIME NULL
 );
+
+GO
+
+/* Checking balance */
+CREATE OR ALTER PROCEDURE TariffSalesSummary (@sub_id INT)
+AS
+BEGIN
+	SELECT *
+	FROM [Subscriber];
+END;
+
+GO
