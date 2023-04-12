@@ -17,8 +17,7 @@ CREATE TABLE Subscriber (
 	[sub_id] INT IDENTITY(1,1) PRIMARY KEY, /* id */
 
 	[sub_name] NVARCHAR(64) NOT NULL, /* surname, name, patronymic */
-	[sub_passport_s] VARCHAR(4) NULL DEFAULT NULL, /* link to: PASSPORT */
-	[sub_passport_n] VARCHAR(6) NULL DEFAULT NULL, /* link to: PASSPORT */
+	[sub_passport] VARCHAR(11) NULL DEFAULT NULL, /* link to: PASSPORT */
 	
 	[sub_phone_number] VARCHAR(16) NOT NULL,
 	[sub_joining_date] DATE NULL, /* start date of using the operator's services */
@@ -31,15 +30,14 @@ CREATE TABLE Subscriber (
 /* Passport entity */
 DROP TABLE IF EXISTS [Passport];
 CREATE TABLE Passport (
-	[ppt_series] VARCHAR(4) NOT NULL, /* Passport series */
-	[ppt_number] VARCHAR(6) NOT NULL, /* Passport number */
+	[ppt_series_number] VARCHAR(4) NOT NULL, /* Passport series */
 	[ppt_issued_by] NVARCHAR(64) NOT NULL, /* Who issued the passport */
 	[ppt_issued_date] DATE NOT NULL, /* When the passport was issued */
 	[ppt_division_code] VARCHAR(10) NOT NULL, /* The code of the organization that issued the passport */
 	[ppt_date_of_birth] DATE NOT NULL, /* The date of birth of the passport holder */
-	CONSTRAINT ppt_ser_num PRIMARY KEY CLUSTERED ([ppt_series], [ppt_number])
+	CONSTRAINT ppt_ser_num PRIMARY KEY ([ppt_series_number])
 );
-ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pptHolds FOREIGN KEY ([sub_passport_s], [sub_passport_n]) REFERENCES Passport([ppt_series], [ppt_number]);
+ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pptHolds FOREIGN KEY ([sub_passport]) REFERENCES Passport([ppt_series_number]);
 
 
 
@@ -49,6 +47,7 @@ CREATE TABLE HomeAddress (
 	[adr_id] INT NOT NULL,
 
 	[adr_city] NVARCHAR NOT NULL,
+	[adr_locality] NVARCHAR NOT NULL,
 	[adr_street] NVARCHAR NOT NULL,
 	[adr_home] NVARCHAR NOT NULL,
 	[adr_apartment] NVARCHAR NOT NULL,
