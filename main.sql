@@ -20,8 +20,10 @@ CREATE TABLE Subscriber (
 	[sub_passport_s] VARCHAR(4) NULL DEFAULT NULL, /* link to: PASSPORT */
 	[sub_passport_n] VARCHAR(6) NULL DEFAULT NULL, /* link to: PASSPORT */
 	
+	[sub_phone_number] VARCHAR(16) NOT NULL,
 	[sub_joining_date] DATE NULL, /* start date of using the operator's services */
 	[sub_tariff] INT NULL, /* current tariff */
+	[sub_balance] DECIMAL NOT NULL DEFAULT 0 /* Subscriber balance */
 );
 
 
@@ -38,6 +40,19 @@ CREATE TABLE Passport (
 	CONSTRAINT ppt_ser_num PRIMARY KEY CLUSTERED ([ppt_series], [ppt_number])
 );
 ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pptHolds FOREIGN KEY ([sub_passport_s], [sub_passport_n]) REFERENCES Passport([ppt_series], [ppt_number]);
+
+
+
+/* Address entity */
+DROP TABLE IF EXISTS [HomeAddress];
+CREATE TABLE HomeAddress (
+	[adr_id] INT NOT NULL,
+
+	[adr_city] NVARCHAR NOT NULL,
+	[adr_street] NVARCHAR NOT NULL,
+	[adr_home] NVARCHAR NOT NULL,
+	[adr_apartment] NVARCHAR NOT NULL,
+);
 
 
 
