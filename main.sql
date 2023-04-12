@@ -98,13 +98,13 @@ CREATE TABLE Tariff (
 
 
 /* Package entity */
-DROP TABLE IF EXISTS [Package];
-CREATE TABLE Package (
-	[pak_id] INT IDENTITY(1,1) PRIMARY KEY,
-
-	[pak_minutes] INT NOT NULL,
-	[pak_sms] INT NOT NULL,
-	[pak_internet] REAL NOT NULL
+DROP TABLE IF EXISTS [Afford];
+CREATE TABLE Afford (
+	[aff_id] INT IDENTITY(1,1) PRIMARY KEY,
+	 
+	[aff_minutes] INT NOT NULL,
+	[aff_sms] INT NOT NULL,
+	[aff_internet] REAL NOT NULL
 );
 
 
