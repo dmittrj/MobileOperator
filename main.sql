@@ -31,7 +31,7 @@ CREATE TABLE Subscriber (
 /* Passport entity */
 DROP TABLE IF EXISTS [Passport];
 CREATE TABLE Passport (
-	[ppt_series_number] VARCHAR(4) NOT NULL,
+	[ppt_series_number] VARCHAR(11) NOT NULL,
 	[ppt_issued_by] NVARCHAR(64) NOT NULL,
 	[ppt_issued_date] DATE NOT NULL,
 	[ppt_division_code] VARCHAR(10) NOT NULL,
