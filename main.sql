@@ -10,20 +10,29 @@ GO
 USE MobileOperator_by_DmitryBalabanov;
 
 
+/* Own types */
+CREATE TYPE PHONE FROM VARCHAR(16) NOT NULL;
+CREATE TYPE PASSPORT FROM VARCHAR(11) NOT NULL;
+
+GO
+
 
 /* Subscriber entity */
 DROP TABLE IF EXISTS [Subscriber];
 CREATE TABLE Subscriber (
-	[sub_id] INT IDENTITY(1,1) PRIMARY KEY,
+	[sub_phone_number] PHONE PRIMARY KEY,
 
 	[sub_name] NVARCHAR(64) NOT NULL,
-	[sub_passport] VARCHAR(11) NULL DEFAULT NULL,
+	[sub_passport] PASSPORT NOT NULL,
 	
-	[sub_phone_number] VARCHAR(16) NOT NULL UNIQUE,
 	[sub_joining_date] DATE NULL DEFAULT NULL,
 	[sub_billing_date] DATE NULL DEFAULT NULL,
+
 	[sub_tariff] INT NULL DEFAULT NULL,
-	[sub_balance] DECIMAL NOT NULL DEFAULT 0
+	[sub_balance] SMALLMONEY NOT NULL DEFAULT 0,
+	[sub_package] INT NOT NULL,
+
+	[sub_email] VARCHAR(255) NULL DEFAULT NULL
 );
 
 
@@ -31,15 +40,14 @@ CREATE TABLE Subscriber (
 /* Passport entity */
 DROP TABLE IF EXISTS [Passport];
 CREATE TABLE Passport (
-	[ppt_series_number] VARCHAR(11) NOT NULL,
+	[ppt_series_number] PASSPORT PRIMARY KEY,
 	[ppt_issued_by] NVARCHAR(64) NOT NULL,
 	[ppt_issued_date] DATE NOT NULL,
-	[ppt_division_code] VARCHAR(10) NOT NULL,
+	[ppt_division_code] VARCHAR(7) NOT NULL,
 	[ppt_date_of_birth] DATE NOT NULL,
 	[ppt_address] INT NOT NULL,
 
-	[ppt_gender] CHAR NOT NULL,
-	CONSTRAINT ppt_ser_num PRIMARY KEY ([ppt_series_number])
+	[ppt_gender] CHAR NOT NULL
 );
 ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pptHolds FOREIGN KEY ([sub_passport]) REFERENCES Passport([ppt_series_number]);
 
@@ -57,7 +65,9 @@ CREATE TABLE HomeAddress (
 	[adr_home] NVARCHAR NOT NULL,
 	[adr_apartment] NVARCHAR NOT NULL,
 
-	[add_post_index] VARCHAR(6) NOT NULL
+	[add_post_index] VARCHAR(6) NOT NULL,
+
+	[add_subscriber] INT NOT NULL
 );
 
 
@@ -66,11 +76,14 @@ CREATE TABLE HomeAddress (
 DROP TABLE IF EXISTS [Tariff];
 CREATE TABLE Tariff (
 	[tar_id] INT IDENTITY(1,1) PRIMARY KEY,
-	[tar_name] NVARCHAR(32) NOT NULL,
+	[tar_name] NVARCHAR(32) NOT NULL UNIQUE,
+	[tar_creating_date] DATE NOT NULL,
 
 	[tar_minutes] INT NOT NULL,
 	[tar_sms] INT NOT NULL,
-	[tar_internet] REAL NOT NULL
+	[tar_internet] REAL NOT NULL,
+
+	[tar_cost] SMALLMONEY NOT NULL DEFAULT 0
 );
 
 
@@ -106,7 +119,7 @@ CREATE TABLE Billings (
 	[bll_id] INT IDENTITY(1,1) PRIMARY KEY,
 	 
 	[bll_sub_id] INT NOT NULL,
-	[bll_money] DECIMAL NOT NULL DEFAULT 0,
+	[bll_money] SMALLMONEY NOT NULL DEFAULT 0,
 	 
 	[bll_date] DATETIME NULL
 );
