@@ -54,9 +54,9 @@ CREATE TABLE Passport (
 	[ppt_issued_date] DATE NOT NULL,
 	[ppt_division_code] VARCHAR(7) NOT NULL,
 	[ppt_date_of_birth] DATE NOT NULL,
-	[ppt_address] INT NOT NULL,
+	[ppt_address] INT NULL DEFAULT NULL,
 
-	[ppt_gender] CHAR NOT NULL
+	[ppt_gender] CHAR NOT NULL CONSTRAINT ch_gen CHECK([ppt_gender] IN ('M', 'F'))
 );
 ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pptHolds FOREIGN KEY ([sub_passport]) REFERENCES Passport([ppt_series_number]);
 
@@ -78,6 +78,7 @@ CREATE TABLE HomeAddress (
 
 	[add_subscriber] INT NOT NULL
 );
+ALTER TABLE [Passport] ADD CONSTRAINT fk_ppt_adrLives FOREIGN KEY ([ppt_address]) REFERENCES HomeAddress([adr_id]);
 
 
 
