@@ -55,7 +55,10 @@ CREATE TABLE Passport (
 
 	[ppt_gender] CHAR NOT NULL CONSTRAINT ch_gen CHECK([ppt_gender] IN ('M', 'F'))
 );
-ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pptHolds FOREIGN KEY ([sub_passport]) REFERENCES Passport([ppt_series_number]);
+ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pptHolds 
+	FOREIGN KEY ([sub_passport]) REFERENCES Passport([ppt_series_number])
+	ON DELETE CASCADE
+	ON UPDATE CASCADE;
 
 
 
@@ -72,7 +75,10 @@ CREATE TABLE HomeAddress (
 
 	[add_post_index] VARCHAR(6) NOT NULL,
 );
-ALTER TABLE [Passport] ADD CONSTRAINT fk_ppt_adrLives FOREIGN KEY ([ppt_address]) REFERENCES HomeAddress([adr_id]);
+ALTER TABLE [Passport] ADD CONSTRAINT fk_ppt_adrLives 
+	FOREIGN KEY ([ppt_address]) REFERENCES HomeAddress([adr_id])
+	ON DELETE CASCADE
+	ON UPDATE CASCADE;
 
 
 

@@ -1,9 +1,9 @@
 /* This query fills all tables in DB with some values */
 
 USE MobileOperator_by_DmitryBalabanov;
-TRUNCATE TABLE Subscriber;
-TRUNCATE TABLE Passport;
-TRUNCATE TABLE HomeAddress;
+DELETE FROM Subscriber;
+DELETE FROM Passport;
+DELETE FROM HomeAddress;
 
 INSERT INTO HomeAddress (adr_id, adr_region, adr_city, adr_locality, adr_street, adr_home, adr_apartment, add_post_index)
 VALUES
@@ -33,15 +33,15 @@ VALUES
 	('1234 567899', 'МВД РФ', '2020-10-01', '890-123', '1950-01-10', 10, 'M');
 
 
-INSERT INTO Subscriber (sub_phone_number, sub_name, sub_passport, sub_joining_date, sub_billing_date, sub_tariff, sub_balance, sub_package, sub_email)
+INSERT INTO Subscriber (sub_phone_number, sub_name, sub_passport, sub_joining_date, sub_tariff, sub_balance, sub_package, sub_email)
 VALUES
-	('+79123456789', 'Голый Андрей Иванович', '1234 567890', '2021-10-01', '2021-11-01', 1, 100, 1, 'golyi@example.com'),
-	('+79123456788', 'Гаражный Денис Витальевич', '1234 567891', '2021-10-01', '2021-11-01', 1, 200, 1, 'garazhny@example.com'),
-	('+79123456787', 'Ровный Анатолий Петрович', '1234 567892', '2021-10-01', '2021-11-01', 1, 300, 1, 'rovnyi@example.com'),
-	('+79123456786', 'Котов Иван Степанович', '1234 567893', '2021-10-01', '2021-11-01', 1, 400, 1, 'kotov@example.com'),
-	('+79123456785', 'Пыхтеловский Геннадий Андреевич', '1234 567894', '2021-10-01', '2021-11-01', 1, 500, 1, 'pykhtelovsky@example.com'),
-	('+79123456784', 'Збзызина Елена Эдуардовна', '1234 567895', '2021-10-01', '2021-11-01', 1, 600, 1, 'zbzyzina@example.com'),
-	('+79123456783', 'Поляк Петр Евгеньвич', '1234 567896', '2021-10-01', '2021-11-01', 1, 700, 1, 'polyak@example.com'),
-	('+79123456782', 'Гренкина Виктория Дмитриевна', '1234 567897', '2021-10-01', '2021-11-01', 1, 800, 1, 'grenkina@example.com'),
-	('+79123456781', 'Безударный Владимир Николаевич', '1234 567898', '2021-10-01', '2021-11-01', 1, 900, 1, 'bezudarny@example.com'),
-	('+79123456780', 'Громовой Матвей Витальевич', '1234 567899', '2021-10-01', '2021-11-01', 1, 1000, 1, 'gromovoy@example.com');
+	('+79123456789', 'Голый Андрей Иванович', '1234 567890', '2021-10-01', 1, 100, 1, 'golyi@example.com'),
+	('+79123456788', 'Гаражный Денис Витальевич', '1234 567891', '2021-10-01', 1, 200, 1, 'garazhny@example.com'),
+	('+79123456787', 'Ровный Анатолий Петрович', '1234 567892', '2021-10-01', 1, 300, 1, 'rovnyi@example.com'),
+	('+79123456786', 'Котов Иван Степанович', '1234 567893', '2021-10-01', 1, 400, 1, 'kotov@example.com'),
+	('+79123456785', 'Пыхтеловский Геннадий Андреевич', '1234 567894', '2021-10-01', 1, 500, 1, 'pykhtelovsky@example.com'),
+	('+79123456784', 'Збзызина Елена Эдуардовна', '1234 567895', '2021-10-01', 1, 600, 1, 'zbzyzina@example.com'),
+	('+79123456783', 'Поляк Петр Евгеньвич', '1234 567896', '2021-10-01', 1, 700, 1, 'polyak@example.com'),
+	('+79123456782', 'Гренкина Виктория Дмитриевна', '1234 567897', '2021-10-01', 1, 800, 1, 'grenkina@example.com'),
+	('+79123456781', 'Безударный Владимир Николаевич', '1234 567898', '2021-10-01', 1, 900, 1, 'bezudarny@example.com'),
+	('+79123456780', 'Громовой Матвей Витальевич', '1234 567899', '2021-10-01', 1, 1000, 1, 'gromovoy@example.com');
