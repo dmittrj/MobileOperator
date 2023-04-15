@@ -9,20 +9,24 @@ GO
 
 USE MobileOperator_by_DmitryBalabanov;
 
+DROP TABLE IF EXISTS [Subscriber];
+DROP TABLE IF EXISTS [Passport];
+DROP TABLE IF EXISTS [HomeAddress];
+
 
 /* Own types */
 DROP TYPE IF EXISTS PHONE
 DROP TYPE IF EXISTS PASSPORTDATA
-DROP TYPE IF EXISTS PACKAGE
+DROP TYPE IF EXISTS STRING
 
 CREATE TYPE PHONE FROM VARCHAR(16) NOT NULL;
 CREATE TYPE PASSPORTDATA FROM VARCHAR(11) NOT NULL;
+CREATE TYPE STRING FROM NVARCHAR(64);
 
 GO
 
 
 /* Subscriber entity */
-DROP TABLE IF EXISTS [Subscriber];
 CREATE TABLE Subscriber (
 	[sub_phone_number] PHONE PRIMARY KEY,
 
@@ -42,7 +46,6 @@ CREATE TABLE Subscriber (
 
 
 /* Passport entity */
-DROP TABLE IF EXISTS [Passport];
 CREATE TABLE Passport (
 	[ppt_series_number] PASSPORTDATA PRIMARY KEY,
 	[ppt_issued_by] NVARCHAR(64) NOT NULL,
@@ -58,20 +61,17 @@ ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pptHolds FOREIGN KEY ([sub_passpo
 
 
 /* Address entity */
-DROP TABLE IF EXISTS [HomeAddress];
 CREATE TABLE HomeAddress (
 	[adr_id] INT PRIMARY KEY,
 
-	[adr_region] NVARCHAR NOT NULL,
-	[adr_city] NVARCHAR NOT NULL,
-	[adr_locality] NVARCHAR NOT NULL,
-	[adr_street] NVARCHAR NOT NULL,
-	[adr_home] NVARCHAR NOT NULL,
-	[adr_apartment] NVARCHAR NOT NULL,
+	[adr_region] STRING NOT NULL,
+	[adr_city] STRING NOT NULL,
+	[adr_locality] STRING NOT NULL,
+	[adr_street] STRING NOT NULL,
+	[adr_home] STRING NOT NULL,
+	[adr_apartment] STRING NOT NULL,
 
 	[add_post_index] VARCHAR(6) NOT NULL,
-
-	[add_subscriber] INT NOT NULL
 );
 ALTER TABLE [Passport] ADD CONSTRAINT fk_ppt_adrLives FOREIGN KEY ([ppt_address]) REFERENCES HomeAddress([adr_id]);
 
