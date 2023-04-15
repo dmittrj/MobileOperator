@@ -103,17 +103,20 @@ ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_tarUse
 
 
 /* Package entity */
-DROP TABLE IF EXISTS [Afford];
-CREATE TABLE Afford (
-	[aff_id] INT IDENTITY(1,1) PRIMARY KEY,
-	 
-	[aff_minutes] INT NOT NULL,
-	[aff_sms] INT NOT NULL,
-	[aff_internet] REAL NOT NULL,
+DROP TABLE IF EXISTS [Package];
+CREATE TABLE Package (
+	[pck_id] INT IDENTITY(1,1) PRIMARY KEY,
 
-	[aff_billing_date] DATE NULL DEFAULT NULL,
+	[pck_minutes] INT NOT NULL,
+	[pck_sms] INT NOT NULL,
+	[pck_internet] REAL NOT NULL,
+
+	[pck_billing_date] DATE NULL DEFAULT NULL,
 );
-
+ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pckHave 
+	FOREIGN KEY ([sub_package]) REFERENCES Package([pck_id])
+	ON DELETE CASCADE
+	ON UPDATE CASCADE;
 
 
 /* Sellings entity */
@@ -153,4 +156,4 @@ END;
 GO
 
 /* Creating roles */
-CREATE ROLE Cashier
+CREATE ROLE Cashier;
