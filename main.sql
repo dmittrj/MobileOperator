@@ -30,11 +30,10 @@ GO
 CREATE TABLE Subscriber (
 	[sub_phone_number] PHONE PRIMARY KEY,
 
-	[sub_name] NVARCHAR(64) NOT NULL,
+	[sub_name] STRING NOT NULL,
 	[sub_passport] PASSPORTDATA NOT NULL,
 	
 	[sub_joining_date] DATE NULL DEFAULT NULL,
-	[sub_billing_date] DATE NULL DEFAULT NULL,
 
 	[sub_tariff] INT NULL DEFAULT NULL,
 	[sub_balance] SMALLMONEY NOT NULL DEFAULT 0,
@@ -48,7 +47,7 @@ CREATE TABLE Subscriber (
 /* Passport entity */
 CREATE TABLE Passport (
 	[ppt_series_number] PASSPORTDATA PRIMARY KEY,
-	[ppt_issued_by] NVARCHAR(64) NOT NULL,
+	[ppt_issued_by] STRING NOT NULL,
 	[ppt_issued_date] DATE NOT NULL,
 	[ppt_division_code] VARCHAR(7) NOT NULL,
 	[ppt_date_of_birth] DATE NOT NULL,
@@ -100,7 +99,9 @@ CREATE TABLE Afford (
 	 
 	[aff_minutes] INT NOT NULL,
 	[aff_sms] INT NOT NULL,
-	[aff_internet] REAL NOT NULL
+	[aff_internet] REAL NOT NULL,
+
+	[aff_billing_date] DATE NULL DEFAULT NULL,
 );
 
 
