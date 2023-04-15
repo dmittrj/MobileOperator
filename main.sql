@@ -95,6 +95,10 @@ CREATE TABLE Tariff (
 
 	[tar_cost] SMALLMONEY NOT NULL DEFAULT 0
 );
+ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_tarUse 
+	FOREIGN KEY ([sub_tariff]) REFERENCES Tariff([tar_id])
+	ON DELETE CASCADE
+	ON UPDATE CASCADE;
 
 
 
