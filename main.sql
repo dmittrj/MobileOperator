@@ -40,7 +40,7 @@ CREATE TABLE Subscriber (
 	
 	[sub_joining_date] DATE NULL DEFAULT NULL,
 
-	[sub_tariff] INT NULL DEFAULT NULL,
+	[sub_tariff] NVARCHAR(32) NULL DEFAULT NULL,
 	[sub_balance] SMALLMONEY NOT NULL DEFAULT 0,
 
 	[sub_email] VARCHAR(255) NULL DEFAULT NULL
@@ -88,8 +88,7 @@ ALTER TABLE [Passport] ADD CONSTRAINT fk_ppt_adrLives
 
 /* Tariff entity */
 CREATE TABLE Tariff (
-	[tar_id] INT IDENTITY(1,1) PRIMARY KEY,
-	[tar_name] NVARCHAR(32) NOT NULL UNIQUE,
+	[tar_name] NVARCHAR(32) PRIMARY KEY,
 	[tar_creating_date] DATE NOT NULL,
 
 	[tar_minutes] INT NULL,
