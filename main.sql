@@ -12,6 +12,7 @@ USE MobileOperator_by_DmitryBalabanov;
 DROP TABLE IF EXISTS [Subscriber];
 DROP TABLE IF EXISTS [Passport];
 DROP TABLE IF EXISTS [HomeAddress];
+DROP TABLE IF EXISTS [Sellings];
 
 
 /* Own types */
@@ -120,15 +121,18 @@ ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pckHave
 
 
 /* Sellings entity */
-DROP TABLE IF EXISTS [Sellings];
 CREATE TABLE Sellings (
 	[sll_id] INT IDENTITY(1,1) PRIMARY KEY, /* id */
 
-	[sll_sub_id] INT NOT NULL,
+	[sll_subscriber] PHONE NOT NULL,
 	[sll_tar_id] INT NOT NULL,
 	
 	[sll_date] DATETIME NULL,
 );
+ALTER TABLE [Sellings] ADD CONSTRAINT fk_sll_subBought 
+	FOREIGN KEY ([sll_subscriber]) REFERENCES Subscriber([sub_phone_number])
+	ON DELETE NO ACTION
+	ON UPDATE CASCADE;
 
 
 
@@ -140,7 +144,7 @@ CREATE TABLE Billings (
 	[bll_sub_id] INT NOT NULL,
 	[bll_money] SMALLMONEY NOT NULL DEFAULT 0,
 	 
-	[bll_date] DATETIME NULL
+	[bll_date] DATETIME NOT NULL
 );
 
 GO
