@@ -92,9 +92,9 @@ CREATE TABLE Tariff (
 	[tar_name] NVARCHAR(32) NOT NULL UNIQUE,
 	[tar_creating_date] DATE NOT NULL,
 
-	[tar_minutes] INT NOT NULL,
-	[tar_sms] INT NOT NULL,
-	[tar_internet] REAL NOT NULL,
+	[tar_minutes] INT NULL,
+	[tar_sms] INT NULL,
+	[tar_internet] REAL NULL,
 
 	[tar_cost] SMALLMONEY NOT NULL DEFAULT 0
 );
