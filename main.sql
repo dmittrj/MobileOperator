@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS [Subscriber];
 DROP TABLE IF EXISTS [Passport];
 DROP TABLE IF EXISTS [HomeAddress];
 DROP TABLE IF EXISTS [Sellings];
+DROP TABLE IF EXISTS [Tariff];
 
 
 /* Own types */
@@ -84,7 +85,6 @@ ALTER TABLE [Passport] ADD CONSTRAINT fk_ppt_adrLives
 
 
 /* Tariff entity */
-DROP TABLE IF EXISTS [Tariff];
 CREATE TABLE Tariff (
 	[tar_id] INT IDENTITY(1,1) PRIMARY KEY,
 	[tar_name] NVARCHAR(32) NOT NULL UNIQUE,
@@ -122,10 +122,10 @@ ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pckHave
 
 /* Sellings entity */
 CREATE TABLE Sellings (
-	[sll_id] INT IDENTITY(1,1) PRIMARY KEY, /* id */
+	[sll_id] INT IDENTITY(1,1) PRIMARY KEY,
 
 	[sll_subscriber] PHONE NOT NULL,
-	[sll_tar_id] INT NOT NULL,
+	[sll_tariff] INT NOT NULL,
 	
 	[sll_date] DATETIME NULL,
 );
@@ -133,7 +133,10 @@ ALTER TABLE [Sellings] ADD CONSTRAINT fk_sll_subBought
 	FOREIGN KEY ([sll_subscriber]) REFERENCES Subscriber([sub_phone_number])
 	ON DELETE NO ACTION
 	ON UPDATE CASCADE;
-
+ALTER TABLE [Sellings] ADD CONSTRAINT fk_sll_tarSold 
+	FOREIGN KEY ([sll_tariff]) REFERENCES Tariff([tar_id])
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION;
 
 
 /* Billings entity */
@@ -146,6 +149,7 @@ CREATE TABLE Billings (
 	 
 	[bll_date] DATETIME NOT NULL
 );
+
 
 GO
 
