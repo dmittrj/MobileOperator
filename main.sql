@@ -14,6 +14,8 @@ DROP TABLE IF EXISTS [Passport];
 DROP TABLE IF EXISTS [HomeAddress];
 DROP TABLE IF EXISTS [Sellings];
 DROP TABLE IF EXISTS [Tariff];
+DROP TABLE IF EXISTS [Billings];
+GO
 
 
 /* Own types */
@@ -22,7 +24,7 @@ DROP TYPE IF EXISTS PASSPORTDATA
 DROP TYPE IF EXISTS STRING
 
 CREATE TYPE PHONE FROM VARCHAR(16) NOT NULL;
-CREATE TYPE PASSPORTDATA FROM VARCHAR(11) NOT NULL;
+CREATE TYPE PASSPORTDATA FROM CHAR(11) NOT NULL;
 CREATE TYPE STRING FROM NVARCHAR(64);
 
 GO
@@ -124,7 +126,7 @@ ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pckHave
 CREATE TABLE Sellings (
 	[sll_id] INT IDENTITY(1,1) PRIMARY KEY,
 
-	[sll_subscriber] PHONE NOT NULL,
+	[sll_subscriber] PHONE,
 	[sll_tariff] INT NOT NULL,
 	
 	[sll_date] DATETIME NULL,
@@ -140,15 +142,18 @@ ALTER TABLE [Sellings] ADD CONSTRAINT fk_sll_tarSold
 
 
 /* Billings entity */
-DROP TABLE IF EXISTS [Billings];
 CREATE TABLE Billings (
 	[bll_id] INT IDENTITY(1,1) PRIMARY KEY,
 	 
-	[bll_sub_id] INT NOT NULL,
+	[bll_subscriber] PHONE,
 	[bll_money] SMALLMONEY NOT NULL DEFAULT 0,
 	 
 	[bll_date] DATETIME NOT NULL
 );
+ALTER TABLE [Billings] ADD CONSTRAINT fk_bll_subReplenished 
+	FOREIGN KEY ([bll_subscriber]) REFERENCES Subscriber([sub_phone_number])
+	ON DELETE NO ACTION
+	ON UPDATE CASCADE;
 
 
 GO
