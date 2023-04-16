@@ -53,7 +53,7 @@ CREATE TABLE Passport (
 	[ppt_series_number] PASSPORTDATA PRIMARY KEY,
 	[ppt_issued_by] STRING NOT NULL,
 	[ppt_issued_date] DATE NOT NULL,
-	[ppt_division_code] VARCHAR(7) NOT NULL,
+	[ppt_division_code] CHAR(7) NOT NULL,
 	[ppt_date_of_birth] DATE NOT NULL,
 	[ppt_address] INT NULL DEFAULT NULL,
 
@@ -114,7 +114,7 @@ CREATE TABLE Package (
 	[pck_sms] INT NOT NULL,
 	[pck_internet] REAL NOT NULL,
 
-	[pck_billing_date] DATE NULL DEFAULT NULL,
+	[pck_billing_date] INT NULL DEFAULT NULL CONSTRAINT ch_billDay CHECK([pck_billing_date] >= 1 AND [pck_billing_date] <= 31),
 );
 ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pckHave 
 	FOREIGN KEY ([sub_package]) REFERENCES Package([pck_id])
@@ -159,7 +159,7 @@ ALTER TABLE [Billings] ADD CONSTRAINT fk_bll_subReplenished
 GO
 
 /* Checking balance */
-CREATE OR ALTER PROCEDURE TariffSalesSummary (@sub_id INT)
+CREATE OR ALTER PROCEDURE CreateSellingsSummary (@date_from DATE, @date_to DATE)
 AS
 BEGIN
 	SELECT *
