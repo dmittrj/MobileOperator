@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS [HomeAddress];
 DROP TABLE IF EXISTS [Sellings];
 DROP TABLE IF EXISTS [Tariff];
 DROP TABLE IF EXISTS [Billings];
+DROP TABLE IF EXISTS [Package];
 GO
 
 
@@ -41,7 +42,6 @@ CREATE TABLE Subscriber (
 
 	[sub_tariff] INT NULL DEFAULT NULL,
 	[sub_balance] SMALLMONEY NOT NULL DEFAULT 0,
-	[sub_package] INT NOT NULL,
 
 	[sub_email] VARCHAR(255) NULL DEFAULT NULL
 );
@@ -106,9 +106,9 @@ ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_tarUse
 
 
 /* Package entity */
-DROP TABLE IF EXISTS [Package];
 CREATE TABLE Package (
 	[pck_id] INT IDENTITY(1,1) PRIMARY KEY,
+	[pck_subscriber] PHONE,
 
 	[pck_minutes] INT NOT NULL,
 	[pck_sms] INT NOT NULL,
@@ -116,8 +116,8 @@ CREATE TABLE Package (
 
 	[pck_billing_date] INT NULL DEFAULT NULL CONSTRAINT ch_billDay CHECK([pck_billing_date] >= 1 AND [pck_billing_date] <= 31),
 );
-ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_pckHave 
-	FOREIGN KEY ([sub_package]) REFERENCES Package([pck_id])
+ALTER TABLE [Package] ADD CONSTRAINT fk_pck_subOwn 
+	FOREIGN KEY ([pck_subscriber]) REFERENCES Subscriber([sub_phone_number])
 	ON DELETE CASCADE
 	ON UPDATE CASCADE;
 

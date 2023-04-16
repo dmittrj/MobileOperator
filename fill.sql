@@ -14,7 +14,7 @@ VALUES
 	(4, 'Для интернета', '2022-01-07', 10, 5, 20, 400);
 
 
-INSERT INTO HomeAddress (adr_id, adr_region, adr_city, adr_locality, adr_street, adr_home, adr_apartment, add_post_index)
+INSERT INTO HomeAddress (adr_id, adr_region, adr_city, adr_locality, adr_street, adr_home, adr_apartment, adr_post_index)
 VALUES
 	(1, 'Московская область', 'Одинцово', 'Сколково', 'ул. Новая', 'д. 1', 'кв. 1', '143001'),
 	(2, 'Москва', 'Москва', 'Басманный', 'ул. Никольная', 'д. 10', 'кв. 5', '125009'),
