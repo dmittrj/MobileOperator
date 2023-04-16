@@ -4,6 +4,15 @@ USE MobileOperator_by_DmitryBalabanov;
 DELETE FROM Subscriber;
 DELETE FROM Passport;
 DELETE FROM HomeAddress;
+DELETE FROM Tariff;
+
+INSERT INTO Tariff (tar_id, tar_name, tar_creating_date, tar_minutes, tar_sms, tar_internet, tar_cost)
+VALUES
+	(1, 'Стандартный', '2022-01-03', 300, 20, 4, 300),
+	(2, 'Экономный', '2022-01-04', 100, 20, 1, 100),
+	(3, 'Для звонков', '2022-01-06', 1000, 10, 1, 200),
+	(4, 'Для интернета', '2022-01-07', 10, 5, 20, 400);
+
 
 INSERT INTO HomeAddress (adr_id, adr_region, adr_city, adr_locality, adr_street, adr_home, adr_apartment, add_post_index)
 VALUES
@@ -36,12 +45,12 @@ VALUES
 INSERT INTO Subscriber (sub_phone_number, sub_name, sub_passport, sub_joining_date, sub_tariff, sub_balance, sub_package, sub_email)
 VALUES
 	('+79123456789', 'Голый Андрей Иванович', '1234 567890', '2021-10-01', 1, 100, 1, 'golyi@example.com'),
-	('+79123456788', 'Гаражный Денис Витальевич', '1234 567891', '2021-10-01', 1, 200, 1, 'garazhny@example.com'),
+	('+79123456788', 'Гаражный Денис Витальевич', '1234 567891', '2021-10-01', 4, 200, 1, 'garazhny@example.com'),
 	('+79123456787', 'Ровный Анатолий Петрович', '1234 567892', '2021-10-01', 1, 300, 1, 'rovnyi@example.com'),
 	('+79123456786', 'Котов Иван Степанович', '1234 567893', '2021-10-01', 1, 400, 1, 'kotov@example.com'),
-	('+79123456785', 'Пыхтеловский Геннадий Андреевич', '1234 567894', '2021-10-01', 1, 500, 1, 'pykhtelovsky@example.com'),
-	('+79123456784', 'Збзызина Елена Эдуардовна', '1234 567895', '2021-10-01', 1, 600, 1, 'zbzyzina@example.com'),
-	('+79123456783', 'Поляк Петр Евгеньвич', '1234 567896', '2021-10-01', 1, 700, 1, 'polyak@example.com'),
+	('+79123456785', 'Пыхтеловский Геннадий Андреевич', '1234 567894', '2021-10-01', 2, 500, 1, 'pykhtelovsky@example.com'),
+	('+79123456784', 'Збзызина Елена Эдуардовна', '1234 567895', '2021-10-01', 3, 600, 1, 'zbzyzina@example.com'),
+	('+79123456783', 'Поляк Петр Евгеньвич', '1234 567896', '2021-10-01', 1, 700, 3, 'polyak@example.com'),
 	('+79123456782', 'Гренкина Виктория Дмитриевна', '1234 567897', '2021-10-01', 1, 800, 1, 'grenkina@example.com'),
-	('+79123456781', 'Безударный Владимир Николаевич', '1234 567898', '2021-10-01', 1, 900, 1, 'bezudarny@example.com'),
-	('+79123456780', 'Громовой Матвей Витальевич', '1234 567899', '2021-10-01', 1, 1000, 1, 'gromovoy@example.com');
+	('+79123456781', 'Безударный Владимир Николаевич', '1234 567898', '2021-10-01', 4, 900, 1, 'bezudarny@example.com'),
+	('+79123456780', 'Громовой Матвей Витальевич', '1234 567899', '2021-10-01', 2, 1000, 1, 'gromovoy@example.com');
