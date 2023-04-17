@@ -77,7 +77,7 @@ CREATE TABLE HomeAddress (
 	[adr_locality] STRING NOT NULL,
 	[adr_street] STRING NOT NULL,
 	[adr_home] VARCHAR(10) NOT NULL,
-	[adr_apartment] VARCHAR(5) NOT NULL,
+	[adr_apartment] VARCHAR(5) NULL,
 
 	[adr_post_index] CHAR(6) NOT NULL,
 );
@@ -142,7 +142,7 @@ CREATE TABLE Sellings (
 	[sll_id] INT IDENTITY(1,1) PRIMARY KEY,
 
 	[sll_subscriber] PHONE,
-	[sll_tariff] INT NOT NULL,
+	[sll_tariff] NVARCHAR(32) NOT NULL,
 	
 	[sll_date] DATETIME NULL,
 );
@@ -151,7 +151,7 @@ ALTER TABLE [Sellings] ADD CONSTRAINT fk_sll_subBought
 	ON DELETE NO ACTION
 	ON UPDATE CASCADE;
 ALTER TABLE [Sellings] ADD CONSTRAINT fk_sll_tarSold 
-	FOREIGN KEY ([sll_tariff]) REFERENCES Tariff([tar_id])
+	FOREIGN KEY ([sll_tariff]) REFERENCES Tariff([tar_name])
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION;
 	
