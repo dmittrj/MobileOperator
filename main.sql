@@ -111,6 +111,7 @@ ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_tarUse
 	ON UPDATE CASCADE;
 	
 	
+
 /* Unlimited services entity */	
 CREATE TABLE UnlimitedServices (
 	[unl_id] INT IDENTITY(1,1) PRIMARY KEY,
@@ -135,6 +136,7 @@ ALTER TABLE [Package] ADD CONSTRAINT fk_pck_subOwn
 	FOREIGN KEY ([pck_subscriber]) REFERENCES Subscriber([sub_phone_number])
 	ON DELETE CASCADE
 	ON UPDATE CASCADE;
+
 
 
 /* Sellings entity */
