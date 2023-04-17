@@ -16,6 +16,8 @@ DROP TABLE IF EXISTS [Sellings];
 DROP TABLE IF EXISTS [Tariff];
 DROP TABLE IF EXISTS [Billings];
 DROP TABLE IF EXISTS [Package];
+DROP TABLE IF EXISTS [Traffic];
+DROP TABLE IF EXISTS [UnlimitedServices];
 GO
 
 
@@ -89,18 +91,32 @@ ALTER TABLE [Passport] ADD CONSTRAINT fk_ppt_adrLives
 /* Tariff entity */
 CREATE TABLE Tariff (
 	[tar_name] NVARCHAR(32) PRIMARY KEY,
+	[tar_description] NVARCHAR(100) NULL DEFAULT NULL,
+	[tar_restrictions] NVARCHAR(100) NULL DEFAULT NULL,
 	[tar_creating_date] DATE NOT NULL,
 
 	[tar_minutes] INT NULL,
 	[tar_sms] INT NULL,
 	[tar_internet] REAL NULL,
+	
+	[tar_internet_speed] INT NULL DEFAULT NULL,
 
-	[tar_cost] SMALLMONEY NOT NULL DEFAULT 0
+	[tar_cost] SMALLMONEY NOT NULL DEFAULT 0,
+	
+	[tar_archived] BIT NOT NULL DEFAULT 0
 );
 ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_tarUse 
 	FOREIGN KEY ([sub_tariff]) REFERENCES Tariff([tar_id])
 	ON DELETE CASCADE
 	ON UPDATE CASCADE;
+	
+	
+/* Unlimited services entity */	
+CREATE TABLE UnlimitedServices (
+	[unl_id] INT IDENTITY(1,1) PRIMARY KEY,
+	[unl_tariff] NVARCHAR(32) NOT NULL,
+	[unl_service] NVARCHAR(64) NOT NULL
+)
 
 
 
@@ -140,6 +156,7 @@ ALTER TABLE [Sellings] ADD CONSTRAINT fk_sll_tarSold
 	ON UPDATE NO ACTION;
 	
 
+/* Traffic entity */
 CREATE TABLE Traffic (
 	[trf_id] INT IDENTITY(1,1) PRIMARY KEY,
 	[trf_subscriber] PHONE NOT NULL,
