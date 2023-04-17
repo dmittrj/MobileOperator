@@ -195,5 +195,23 @@ END;
 
 GO
 
+CREATE OR ALTER PROCEDURE UpdateTariffGrid (@date_from DATE, @date_to DATE)
+AS
+BEGIN
+	SELECT *
+	FROM [Subscriber];
+END;
+
+GO
+
+CREATE OR ALTER PROCEDURE ChooseTariff (@date_from DATE, @date_to DATE)
+AS
+BEGIN
+	SELECT *
+	FROM [Subscriber];
+END;
+
+GO
+
 /* Creating roles */
 CREATE ROLE Cashier;
