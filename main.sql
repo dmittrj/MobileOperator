@@ -138,6 +138,17 @@ ALTER TABLE [Sellings] ADD CONSTRAINT fk_sll_tarSold
 	FOREIGN KEY ([sll_tariff]) REFERENCES Tariff([tar_id])
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION;
+	
+
+CREATE TABLE Traffic (
+	[trf_id] INT IDENTITY(1,1) PRIMARY KEY,
+	[trf_subscriber] PHONE NOT NULL,
+	[trf_datetime] DATETIME NOT NULL,
+	[trf_type] NVARCHAR(15) NOT NULL CONSTRAINT ch_traffic CHECK ([trf_type] IN ('Internet', 'SMS', 'Outgoing call', 'Incoming call')),
+	[trf_decription] NVARCHAR(20) NOT NULL,
+	[trf_amount] DECIMAL NOT NULL,
+	[trf_pay] MONEY NOT NULL
+)
 
 
 /* Billings entity */
