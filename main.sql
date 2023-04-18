@@ -25,10 +25,14 @@ GO
 DROP TYPE IF EXISTS PHONE
 DROP TYPE IF EXISTS PASSPORTDATA
 DROP TYPE IF EXISTS STRING
+DROP TYPE IF EXISTS SMALLSTRING
+DROP TYPE IF EXISTS BIGSTRING
 
 CREATE TYPE PHONE FROM VARCHAR(16) NOT NULL;
 CREATE TYPE PASSPORTDATA FROM CHAR(11) NOT NULL;
 CREATE TYPE STRING FROM NVARCHAR(64);
+CREATE TYPE SMALLSTRING FROM NVARCHAR(32);
+CREATE TYPE BIGSTRING FROM NVARCHAR(100);
 
 GO
 
@@ -42,7 +46,7 @@ CREATE TABLE Subscriber (
 	
 	[sub_joining_date] DATE NULL DEFAULT NULL,
 
-	[sub_tariff] NVARCHAR(32) NULL DEFAULT NULL,
+	[sub_tariff] SMALLSTRING NULL DEFAULT NULL,
 	[sub_balance] SMALLMONEY NOT NULL DEFAULT 0,
 
 	[sub_email] VARCHAR(255) NULL DEFAULT NULL
@@ -90,9 +94,9 @@ ALTER TABLE [Passport] ADD CONSTRAINT fk_ppt_adrLives
 
 /* Tariff entity */
 CREATE TABLE Tariff (
-	[tar_name] NVARCHAR(32) PRIMARY KEY,
-	[tar_description] NVARCHAR(100) NULL DEFAULT NULL,
-	[tar_restrictions] NVARCHAR(100) NULL DEFAULT NULL,
+	[tar_name] SMALLSTRING PRIMARY KEY,
+	[tar_description] BIGSTRING NULL DEFAULT NULL,
+	[tar_restrictions] BIGSTRING NULL DEFAULT NULL,
 	[tar_creating_date] DATE NOT NULL,
 
 	[tar_minutes] INT NULL,
@@ -115,8 +119,8 @@ ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_tarUse
 /* Unlimited services entity */	
 CREATE TABLE UnlimitedServices (
 	[unl_id] INT IDENTITY(1,1) PRIMARY KEY,
-	[unl_tariff] NVARCHAR(32) NOT NULL,
-	[unl_service] NVARCHAR(64) NOT NULL
+	[unl_tariff] SMALLSTRING NOT NULL,
+	[unl_service] STRING NOT NULL
 )
 
 
@@ -144,7 +148,7 @@ CREATE TABLE Sellings (
 	[sll_id] INT IDENTITY(1,1) PRIMARY KEY,
 
 	[sll_subscriber] PHONE,
-	[sll_tariff] NVARCHAR(32) NOT NULL,
+	[sll_tariff] SMALLSTRING NOT NULL,
 	
 	[sll_date] DATETIME NULL,
 );
@@ -164,7 +168,7 @@ CREATE TABLE Traffic (
 	[trf_subscriber] PHONE NOT NULL,
 	[trf_datetime] DATETIME NOT NULL,
 	[trf_type] NVARCHAR(15) NOT NULL CONSTRAINT ch_traffic CHECK ([trf_type] IN ('Internet', 'SMS', 'Outgoing call', 'Incoming call')),
-	[trf_decription] NVARCHAR(20) NOT NULL,
+	[trf_decription] SMALLSTRING NOT NULL,
 	[trf_amount] DECIMAL NOT NULL,
 	[trf_pay] MONEY NOT NULL
 )
