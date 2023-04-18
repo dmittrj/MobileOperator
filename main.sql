@@ -200,12 +200,66 @@ END;
 
 GO
 
-CREATE OR ALTER PROCEDURE UpdateTariffGrid (@date_from DATE, @date_to DATE)
+CREATE PROCEDURE UpdateTariffGrid
 AS
 BEGIN
-	SELECT *
-	FROM [Subscriber];
-END;
+    DECLARE @TariffName NVARCHAR(50)
+    DECLARE @Income MONEY
+    DECLARE @Expenses MONEY
+    DECLARE @Result NVARCHAR(100)
+
+    -- Вычисление суммарного дохода и затрат для каждого тарифа
+    SELECT Tariffs.TariffName,
+           SUM(Sellings.Price) AS Income,
+           SUM(Services.Cost) AS Expenses
+    INTO #TariffData
+    FROM Tariffs
+    JOIN Sellings ON Tariffs.TariffID = Sellings.TariffID
+    JOIN Services ON Tariffs.TariffID = Services.TariffID
+    GROUP BY Tariffs.TariffName
+
+    -- Вычисление среднего количества потраченных минут, SMS и ГБ каждым пользователем
+    SELECT AVG(Minutes) AS AvgMinutes,
+           AVG(SMS) AS AvgSMS,
+           AVG(Gigabytes) AS AvgGigabytes
+    INTO #TrafficData
+    FROM Traffic
+
+    -- Анализ данных и формирование результата
+    WHILE EXISTS(SELECT TOP 1 * FROM #TariffData WHERE Income < Expenses)
+    BEGIN
+        SELECT TOP 1 @TariffName = TariffName,
+                     @Income = Income,
+                     @Expenses = Expenses
+        FROM #TariffData
+        WHERE Income < Expenses
+
+        IF EXISTS(SELECT * FROM Sellings WHERE TariffID = (SELECT TariffID FROM Tariffs WHERE TariffName = @TariffName))
+        BEGIN
+            SET @Result = 'Изменить тариф ' + @TariffName
+        END
+        ELSE
+        BEGIN
+            IF EXISTS(SELECT * FROM Services WHERE TariffID = (SELECT TariffID FROM Tariffs WHERE TariffName = @TariffName))
+            BEGIN
+                SET @Result = 'Убрать тариф ' + @TariffName
+            END
+            ELSE
+            BEGIN
+                SET @Result = 'Добавить тариф ' + @TariffName
+            END
+        END
+
+        DELETE FROM #TariffData WHERE TariffName = @TariffName
+    END
+
+    IF @Result IS NULL
+    BEGIN
+        SET @Result = 'Тарифная сетка находится в оптимальном состоянии'
+    END
+
+    SELECT @Result AS Result
+END
 
 GO
 
