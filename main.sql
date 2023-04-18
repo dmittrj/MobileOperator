@@ -49,7 +49,7 @@ CREATE TABLE Subscriber (
 	[sub_tariff] SMALLSTRING NULL DEFAULT NULL,
 	[sub_balance] SMALLMONEY NOT NULL DEFAULT 0,
 
-	[sub_email] VARCHAR(255) NULL DEFAULT NULL
+	[sub_email] BIGSTRING NULL DEFAULT NULL
 );
 
 
@@ -188,7 +188,6 @@ ALTER TABLE [Billings] ADD CONSTRAINT fk_bll_subReplenished
 	ON DELETE NO ACTION
 	ON UPDATE CASCADE;
 
-
 GO
 
 /* Checking balance */
@@ -210,12 +209,56 @@ END;
 
 GO
 
-CREATE OR ALTER PROCEDURE ChooseTariff (@date_from DATE, @date_to DATE)
+/* Var. 1 */
+CREATE PROCEDURE ChooseTariff
+    @minutes INT,
+    @sms INT,
+    @gb INT,
+    @internetSpeed INT,
+    @services NVARCHAR(MAX)
 AS
 BEGIN
-	SELECT *
-	FROM [Subscriber];
-END;
+    SELECT t.*
+    FROM Tariffs t
+    LEFT JOIN UnlimitedServices us ON t.tariff_name = us.tariff_name
+    WHERE t.archive <> 1
+    AND t.minutes >= @minutes
+    AND t.sms >= @sms
+    AND t.gb >= @gb
+    AND t.internet_speed >= @internetSpeed
+    AND CHARINDEX(us.service_name, @services) > 0
+    ORDER BY t.minutes DESC, t.sms DESC, t.gb DESC, t.internet_speed DESC
+END
+
+/* Var. 2 */
+CREATE PROCEDURE ChooseTariff
+    @minutes INT,
+    @sms INT,
+    @gb INT,
+    @internet_speed INT,
+    @services NVARCHAR(MAX)
+AS
+BEGIN
+    SELECT
+        t.*,
+        CASE
+            WHEN EXISTS (SELECT 1 FROM UnlimitedServices us WHERE us.TariffName = t.TariffName AND us.ServiceName IN (SELECT value FROM string_split(@services, ',')))
+                THEN 1
+            WHEN EXISTS (SELECT 1 FROM UnlimitedServices us WHERE us.TariffName = t.TariffName)
+                THEN 2
+            ELSE 3
+        END AS Priority
+    INTO #temp_tariffs
+    FROM Tariffs t
+    WHERE t.Archive = 0
+    AND t.Minutes >= @minutes
+    AND t.SMS >= @sms
+    AND t.GB >= @gb
+    AND t.InternetSpeed >= @internet_speed
+    ORDER BY Priority
+
+    SELECT * FROM #temp_tariffs
+END
 
 GO
 
