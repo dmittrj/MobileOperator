@@ -81,9 +81,7 @@ CREATE TABLE HomeAddress (
 	[adr_locality] STRING NOT NULL,
 	[adr_street] STRING NOT NULL,
 	[adr_home] VARCHAR(10) NOT NULL,
-	[adr_apartment] VARCHAR(5) NULL,
-
-	[adr_post_index] CHAR(6) NOT NULL,
+	[adr_apartment] VARCHAR(5) NULL
 );
 ALTER TABLE [Passport] ADD CONSTRAINT fk_ppt_adrLives 
 	FOREIGN KEY ([ppt_address]) REFERENCES HomeAddress([adr_id])
