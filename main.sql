@@ -34,9 +34,6 @@ CREATE TYPE STRING FROM NVARCHAR(64);
 CREATE TYPE SMALLSTRING FROM NVARCHAR(32);
 CREATE TYPE BIGSTRING FROM NVARCHAR(100);
 
-CREATE DOMAIN EMAIL AS NVARCHAR(100)
-    CHECK (VALUE LIKE '%_@__%.__%');
-
 GO
 
 
@@ -52,7 +49,7 @@ CREATE TABLE Subscriber (
 	[sub_tariff] SMALLSTRING NULL DEFAULT NULL,
 	[sub_balance] SMALLMONEY NOT NULL DEFAULT 0,
 
-	[sub_email] EMAIL NULL DEFAULT NULL
+	[sub_email] BIGSTRING NULL DEFAULT NULL
 );
 
 
@@ -111,7 +108,7 @@ CREATE TABLE Tariff (
 	[tar_archived] BIT NOT NULL DEFAULT 0
 );
 ALTER TABLE [Subscriber] ADD CONSTRAINT fk_sub_tarUse 
-	FOREIGN KEY ([sub_tariff]) REFERENCES Tariff([tar_id])
+	FOREIGN KEY ([sub_tariff]) REFERENCES Tariff([tar_name])
 	ON DELETE CASCADE
 	ON UPDATE CASCADE;
 	
@@ -200,122 +197,3 @@ BEGIN
 END;
 
 GO
-
-CREATE PROCEDURE UpdateTariffGrid
-AS
-BEGIN
-    DECLARE @TariffName NVARCHAR(50)
-    DECLARE @Income MONEY
-    DECLARE @Expenses MONEY
-    DECLARE @Result NVARCHAR(100)
-
-    -- Вычисление суммарного дохода и затрат для каждого тарифа
-    SELECT Tariffs.TariffName,
-           SUM(Sellings.Price) AS Income,
-           SUM(Services.Cost) AS Expenses
-    INTO #TariffData
-    FROM Tariffs
-    JOIN Sellings ON Tariffs.TariffID = Sellings.TariffID
-    JOIN Services ON Tariffs.TariffID = Services.TariffID
-    GROUP BY Tariffs.TariffName
-
-    -- Вычисление среднего количества потраченных минут, SMS и ГБ каждым пользователем
-    SELECT AVG(Minutes) AS AvgMinutes,
-           AVG(SMS) AS AvgSMS,
-           AVG(Gigabytes) AS AvgGigabytes
-    INTO #TrafficData
-    FROM Traffic
-
-    -- Анализ данных и формирование результата
-    WHILE EXISTS(SELECT TOP 1 * FROM #TariffData WHERE Income < Expenses)
-    BEGIN
-        SELECT TOP 1 @TariffName = TariffName,
-                     @Income = Income,
-                     @Expenses = Expenses
-        FROM #TariffData
-        WHERE Income < Expenses
-
-        IF EXISTS(SELECT * FROM Sellings WHERE TariffID = (SELECT TariffID FROM Tariffs WHERE TariffName = @TariffName))
-        BEGIN
-            SET @Result = 'Изменить тариф ' + @TariffName
-        END
-        ELSE
-        BEGIN
-            IF EXISTS(SELECT * FROM Services WHERE TariffID = (SELECT TariffID FROM Tariffs WHERE TariffName = @TariffName))
-            BEGIN
-                SET @Result = 'Убрать тариф ' + @TariffName
-            END
-            ELSE
-            BEGIN
-                SET @Result = 'Добавить тариф ' + @TariffName
-            END
-        END
-
-        DELETE FROM #TariffData WHERE TariffName = @TariffName
-    END
-
-    IF @Result IS NULL
-    BEGIN
-        SET @Result = 'Тарифная сетка находится в оптимальном состоянии'
-    END
-
-    SELECT @Result AS Result
-END
-
-GO
-
-/* Var. 1 */
-CREATE PROCEDURE ChooseTariff
-    @minutes INT,
-    @sms INT,
-    @gb INT,
-    @internetSpeed INT,
-    @services NVARCHAR(MAX)
-AS
-BEGIN
-    SELECT t.*
-    FROM Tariffs t
-    LEFT JOIN UnlimitedServices us ON t.tariff_name = us.tariff_name
-    WHERE t.archive <> 1
-    AND t.minutes >= @minutes
-    AND t.sms >= @sms
-    AND t.gb >= @gb
-    AND t.internet_speed >= @internetSpeed
-    AND CHARINDEX(us.service_name, @services) > 0
-    ORDER BY t.minutes DESC, t.sms DESC, t.gb DESC, t.internet_speed DESC
-END
-
-/* Var. 2 */
-CREATE PROCEDURE ChooseTariff
-    @minutes INT,
-    @sms INT,
-    @gb INT,
-    @internet_speed INT,
-    @services NVARCHAR(MAX)
-AS
-BEGIN
-    SELECT
-        t.*,
-        CASE
-            WHEN EXISTS (SELECT 1 FROM UnlimitedServices us WHERE us.TariffName = t.TariffName AND us.ServiceName IN (SELECT value FROM string_split(@services, ',')))
-                THEN 1
-            WHEN EXISTS (SELECT 1 FROM UnlimitedServices us WHERE us.TariffName = t.TariffName)
-                THEN 2
-            ELSE 3
-        END AS Priority
-    INTO #temp_tariffs
-    FROM Tariffs t
-    WHERE t.Archive = 0
-    AND t.Minutes >= @minutes
-    AND t.SMS >= @sms
-    AND t.GB >= @gb
-    AND t.InternetSpeed >= @internet_speed
-    ORDER BY Priority
-
-    SELECT * FROM #temp_tariffs
-END
-
-GO
-
-/* Creating roles */
-CREATE ROLE Cashier;
