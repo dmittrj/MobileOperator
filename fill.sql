@@ -17,6 +17,20 @@ VALUES
 	('Премиум', 'Тариф для тех, кто хочет быть особенным. Включает в себя 2000 минут, 1000 SMS и 20 Гб трафика в месяц.', NULL, '2022-01-01', 2000, 1000, 20.0, NULL, 5000, 0);
 
 
+INSERT INTO UnlimitedServices (unl_tariff, unl_service)
+VALUES
+	('Пик', 'vk.com'),
+	('Пик', 'telegram.org'),
+	('Пик', 'whatsapp.com'),
+	('Пик', 'youtube.com'),
+	('Пик', 'yandex.ru'),
+	('Пик', 'wikipedia.org'),
+	('Пик', 'mail.ru'),
+	('Чат', 'telegram.org'),
+	('Чат', 'whatsapp.com');
+
+
+
 INSERT INTO HomeAddress (adr_id, adr_region, adr_city, adr_locality, adr_street, adr_home, adr_apartment)
 VALUES
 	(1, 'Московская область', 'Москва', 'Басманный р-н', 'Бакунинская', '3', '9'),
