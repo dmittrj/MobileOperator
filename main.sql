@@ -236,9 +236,15 @@ GO
 CREATE OR ALTER PROCEDURE UpdateTariffGrid
 AS
 BEGIN
-	SELECT *,
-		(SELECT TOP(1) sll_date FROM Sellings WHERE Subscriber.sub_phone_number = Sellings.sll_subscriber ORDER BY sll_date DESC)
-	FROM Subscriber;
+	SELECT sub_phone_number, sub_tariff, trf_type, average, tar_minutes, tar_sms, tar_internet, tar_cost FROM
+	(SELECT sub_phone_number, sub_tariff, trf_type, AVG(trf_amount) AS [average] FROM
+	(SELECT sub_phone_number, sub_tariff, trf_datetime, trf_type, trf_decription, trf_amount, trf_pay FROM
+	(SELECT *,
+		(SELECT TOP(1) sll_date FROM Sellings WHERE Subscriber.sub_phone_number = Sellings.sll_subscriber ORDER BY sll_date DESC) AS last_tariff_update
+	FROM Subscriber) AS q1
+	JOIN Traffic ON last_tariff_update <= trf_datetime AND sub_phone_number = trf_subscriber) AS q2
+	GROUP BY sub_phone_number, trf_type, sub_tariff) AS q2
+	JOIN Tariff ON Tariff.tar_name = sub_tariff;
 END;
 
 GO
