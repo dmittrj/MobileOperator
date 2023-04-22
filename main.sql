@@ -232,3 +232,13 @@ BEGIN
 END;
 
 GO
+
+CREATE OR ALTER PROCEDURE UpdateTariffGrid
+AS
+BEGIN
+	SELECT *,
+		(SELECT TOP(1) sll_date FROM Sellings WHERE Subscriber.sub_phone_number = Sellings.sll_subscriber ORDER BY sll_date DESC)
+	FROM Subscriber;
+END;
+
+GO
