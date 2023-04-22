@@ -23,6 +23,13 @@ FROM Subscriber
 JOIN Passport ON Subscriber.sub_passport = Passport.ppt_series_number
 
 
+-- View subscribers’ address information
+SELECT sub_phone_number, sub_name, adr_city
+FROM Subscriber
+JOIN Passport ON Subscriber.sub_passport = Passport.ppt_series_number
+JOIN HomeAddress ON Passport.ppt_address = HomeAddress.adr_id;
+
+
 -- Procedures
 EXECUTE CreateDetailing '+79123456789', '01/02/2020', '31/12/2020', 1;
 EXECUTE CreateSellingsSummary '01/02/2020', '01/05/2020';
