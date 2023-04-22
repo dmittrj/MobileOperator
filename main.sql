@@ -198,8 +198,8 @@ BEGIN
 			trf_datetime AS [Date & Time],
 			trf_type AS [Type],
 			trf_decription AS [Description],
-			trf_amount AS [Amount of usage],
-			trf_pay AS [To pay]
+			trf_amount AS [Amount of Usage],
+			trf_pay AS [To Pay]
 		FROM [Traffic]
 		WHERE trf_subscriber = @sub
 		AND trf_datetime BETWEEN @date_from AND @date_to;
@@ -207,7 +207,7 @@ BEGIN
 		SELECT
 			trf_type AS [Type],
 			COUNT(trf_pay) AS [Number],
-			SUM(trf_pay) AS [To pay]
+			SUM(trf_pay) AS [To Pay]
 		FROM [Traffic]
 		WHERE trf_subscriber = @sub
 		AND trf_datetime BETWEEN @date_from AND @date_to
