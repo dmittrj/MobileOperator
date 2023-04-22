@@ -188,12 +188,40 @@ ALTER TABLE [Billings] ADD CONSTRAINT fk_bll_subReplenished
 
 GO
 
+
+/* Checking balance */
+CREATE OR ALTER PROCEDURE CreateDetailing (@sub PHONE, @date_from DATE, @date_to DATE, @brief BIT)
+AS
+BEGIN
+	IF (@brief = 0)
+		SELECT
+			trf_datetime AS [Date & Time],
+			trf_type AS [Type],
+			trf_decription AS [Description],
+			trf_amount AS [Amount of usage],
+			trf_pay AS [To pay]
+		FROM [Traffic]
+		WHERE trf_subscriber = @sub
+		AND trf_datetime BETWEEN @date_from AND @date_to;
+	ELSE
+		SELECT
+			trf_type AS [Type],
+			COUNT(trf_pay) AS [Number],
+			SUM(trf_pay) AS [To pay]
+		FROM [Traffic]
+		WHERE trf_subscriber = @sub
+		AND trf_datetime BETWEEN @date_from AND @date_to
+		GROUP BY trf_type;
+END;
+GO
+
 /* Checking balance */
 CREATE OR ALTER PROCEDURE CreateSellingsSummary (@date_from DATE, @date_to DATE)
 AS
 BEGIN
 	SELECT *
-	FROM [Subscriber];
+	FROM [Traffic]
+	WHERE trf_datetime BETWEEN @date_from AND @date_to
 END;
 
 GO
