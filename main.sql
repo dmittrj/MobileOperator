@@ -212,6 +212,11 @@ BEGIN
 		WHERE trf_subscriber = @sub
 		AND trf_datetime BETWEEN @date_from AND @date_to
 		GROUP BY trf_type;
+
+	SELECT SUM(trf_pay) AS [Total to Pay], (SELECT sub_tariff FROM [Subscriber] WHERE sub_phone_number = @sub) AS [Current Tariff]
+	FROM [Traffic]
+	WHERE trf_subscriber = @sub
+	AND trf_datetime BETWEEN @date_from AND @date_to
 END;
 GO
 
