@@ -224,9 +224,11 @@ GO
 CREATE OR ALTER PROCEDURE CreateSellingsSummary (@date_from DATE, @date_to DATE)
 AS
 BEGIN
-	SELECT *
-	FROM [Traffic]
-	WHERE trf_datetime BETWEEN @date_from AND @date_to
+	SELECT tar_name, SUM(trf_pay) AS [Additional Utilities], ((SELECT COUNT(*) FROM Subscriber WHERE sub_tariff = tar_name) * (SELECT tar_cost FROM Tariff WHERE t.tar_name = tar_name)) AS [Income]
+	FROM [Tariff] AS t
+	JOIN [Subscriber] ON Subscriber.sub_tariff = t.tar_name
+	JOIN [Traffic] ON Traffic.trf_subscriber = Subscriber.sub_phone_number
+	GROUP BY tar_name;
 END;
 
 GO
