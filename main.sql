@@ -128,9 +128,9 @@ CREATE TABLE Package (
 	[pck_id] INT IDENTITY(1,1) PRIMARY KEY,
 	[pck_subscriber] PHONE,
 
-	[pck_minutes] INT NOT NULL,
-	[pck_sms] INT NOT NULL,
-	[pck_internet] REAL NOT NULL,
+	[pck_minutes] INT NULL,
+	[pck_sms] INT NULL,
+	[pck_internet] REAL NULL,
 
 	[pck_billing_date] INT NULL DEFAULT NULL CONSTRAINT ch_billDay CHECK([pck_billing_date] >= 1 AND [pck_billing_date] <= 31),
 );
@@ -165,10 +165,10 @@ CREATE TABLE Traffic (
 	[trf_id] INT IDENTITY(1,1) PRIMARY KEY,
 	[trf_subscriber] PHONE NOT NULL,
 	[trf_datetime] DATETIME NOT NULL,
-	[trf_type] NVARCHAR(15) NOT NULL CONSTRAINT ch_traffic CHECK ([trf_type] IN ('Internet', 'SMS', 'Outgoing call', 'Incoming call')),
+	[trf_type] VARCHAR(15) NOT NULL CONSTRAINT ch_traffic CHECK ([trf_type] IN ('Internet', 'SMS', 'Outgoing call', 'Incoming call')),
 	[trf_decription] SMALLSTRING NOT NULL,
 	[trf_amount] DECIMAL NOT NULL,
-	[trf_pay] MONEY NOT NULL
+	[trf_pay] SMALLMONEY NOT NULL
 )
 
 
