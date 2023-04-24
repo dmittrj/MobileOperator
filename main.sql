@@ -311,22 +311,22 @@ CREATE OR ALTER TRIGGER trig_trafficInput ON [Traffic]
 AFTER INSERT
 AS
 BEGIN
-	DECLARE @ins_type VARCHAR(15);
-	SET @ins_type = (SELECT trf_type FROM INSERTED);
-	IF (@ins_type = 'Outgoing call' AND (SELECT pck_minutes FROM [Package] WHERE pck_subscriber = (SELECT trf_subscriber FROM INSERTED)) IS NOT NULL)
+	DECLARE @ins_type VARCHAR(15); SET @ins_type = (SELECT trf_type FROM INSERTED);
+	DECLARE @ins_subscriber PHONE; SET @ins_subscriber = (SELECT trf_subscriber FROM INSERTED);
+	DECLARE @ins_amount DECIMAL; SET @ins_amount = (SELECT trf_amount FROM INSERTED);
+	DECLARE @ins_tariff SMALLSTRING; SET @ins_tariff = (SELECT sub_tariff FROM [Subscriber] WHERE sub_phone_number = @ins_subscriber);
+	IF (@ins_type = 'Outgoing call' AND (SELECT tar_minutes FROM [Tariff] WHERE tar_name = @ins_tariff) IS NOT NULL)
 	BEGIN
 		UPDATE [Package]
-		SET pck_minutes = pck_minutes - (SELECT trf_amount FROM INSERTED) WHERE pck_subscriber = (SELECT trf_subscriber FROM INSERTED);
-		IF ((SELECT pck_minutes FROM [Package] WHERE pck_subscriber = (SELECT trf_subscriber FROM INSERTED)) < 0 )
+		SET pck_minutes = pck_minutes - @ins_amount WHERE pck_subscriber = @ins_subscriber;
+		IF ((SELECT pck_minutes FROM [Package] WHERE pck_subscriber = @ins_subscriber) < 0 )
 		BEGIN
 			UPDATE [Traffic]
-			SET trf_pay = -(SELECT pck_minutes FROM [Package] WHERE pck_subscriber = (SELECT trf_subscriber FROM INSERTED)) WHERE trf_id = (SELECT trf_id FROM INSERTED);
+			SET trf_pay = -(SELECT pck_minutes FROM [Package] WHERE pck_subscriber = @ins_subscriber)* (SELECT tar_minute_cost FROM [Tariff] WHERE tar_name = @ins_tariff) WHERE trf_id = (SELECT trf_id FROM INSERTED);
 			UPDATE [Subscriber]
-			SET sub_balance = sub_balance - (SELECT trf_pay FROM [Traffic] WHERE trf_id = (SELECT trf_id FROM INSERTED)) WHERE sub_phone_number = (SELECT trf_subscriber FROM INSERTED);
-			--UPDATE [Subscriber]
-			--SET sub_balance = sub_balance + 5 WHERE sub_name = '+79123456789';--(SELECT trf_subscriber FROM INSERTED);
+			SET sub_balance = sub_balance - (SELECT trf_pay FROM [Traffic] WHERE trf_id = (SELECT trf_id FROM INSERTED)) WHERE sub_phone_number = @ins_subscriber;
 			UPDATE [Package]
-			SET pck_minutes = 0 WHERE pck_subscriber = (SELECT trf_subscriber FROM INSERTED);
+			SET pck_minutes = 0 WHERE pck_subscriber = @ins_subscriber;
 		END
 	END
 END;
