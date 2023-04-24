@@ -98,8 +98,11 @@ CREATE TABLE Tariff (
 	[tar_creating_date] DATE NOT NULL,
 
 	[tar_minutes] INT NULL,
+	[tar_minute_cost] SMALLMONEY NULL,
 	[tar_sms] INT NULL,
+	[tar_sms_cost] SMALLMONEY NULL,
 	[tar_internet] REAL NULL,
+	[tar_mb_cost] SMALLMONEY NULL,
 	
 	[tar_internet_speed] INT NULL DEFAULT NULL,
 
