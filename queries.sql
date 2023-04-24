@@ -30,6 +30,21 @@ JOIN Passport ON Subscriber.sub_passport = Passport.ppt_series_number
 JOIN HomeAddress ON Passport.ppt_address = HomeAddress.adr_id;
 
 
+-- Test trigger
+SELECT *
+FROM Subscriber
+JOIN Package ON sub_phone_number = Package.pck_subscriber
+WHERE sub_phone_number = '+79123456789';
+
+INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay) 
+VALUES ('+79123456789', '24/04/2023', 'Internet', '+71234567890', 2, 0);
+
+SELECT *
+FROM Subscriber
+JOIN Package ON sub_phone_number = Package.pck_subscriber
+WHERE sub_phone_number = '+79123456789';
+
+
 -- Procedures
 EXECUTE CreateDetailing '+79123456778', '01/01/2020', '31/12/2021', 0;
 EXECUTE CreateSellingsSummary '01/02/2020', '01/05/2020';
