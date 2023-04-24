@@ -166,7 +166,7 @@ CREATE TABLE Traffic (
 	[trf_subscriber] PHONE NOT NULL,
 	[trf_datetime] DATETIME NOT NULL,
 	[trf_type] VARCHAR(15) NOT NULL CONSTRAINT ch_traffic CHECK ([trf_type] IN ('Internet', 'SMS', 'Outgoing call', 'Incoming call')),
-	[trf_decription] SMALLSTRING NOT NULL,
+	[trf_description] SMALLSTRING NOT NULL,
 	[trf_amount] DECIMAL NOT NULL,
 	[trf_pay] SMALLMONEY NOT NULL
 )
@@ -277,7 +277,7 @@ BEGIN
 	FROM #traffic_tariff
 	WHERE t_type = 'Internet' AND t_internet IS NOT NULL
 	GROUP BY t_tariff
-	HAVING AVG(t_internet * 1024 - t_amount / 1024) > (SELECT tar_internet FROM Tariff WHERE tar_name = t_tariff) * 0.5
+	HAVING AVG(t_internet * 1024 - t_amount) > (SELECT tar_internet FROM Tariff WHERE tar_name = t_tariff) * 0.5
 	UNION
 
 	SELECT t_tariff AS Tariff, 'Increase minutes amount' AS Advice
@@ -298,7 +298,7 @@ BEGIN
 	FROM #traffic_tariff
 	WHERE t_type = 'Internet' AND t_internet IS NOT NULL
 	GROUP BY t_tariff
-	HAVING AVG(t_amount / 1024 - t_internet * 1024) > (SELECT tar_internet FROM Tariff WHERE tar_name = t_tariff) * 0.5;
+	HAVING AVG(t_amount - t_internet * 1024) > (SELECT tar_internet FROM Tariff WHERE tar_name = t_tariff) * 0.5;
 END;
 
 GO

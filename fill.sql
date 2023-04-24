@@ -206,7 +206,7 @@ VALUES
 	('+79123456766', '24/12/2019', 200);
 
 
-INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_decription, trf_amount, trf_pay) VALUES 
+INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay) VALUES 
 	('+79123456789', '01/01/2020', 'Outgoing call', '+79876543210', 1, 0),
 	('+79123456788', '02/02/2021', 'Outgoing call', '+79876543211', 2, 0),
 	('+79123456787', '03/03/2020', 'Outgoing call', '+79876543212', 3, 0),
@@ -241,7 +241,7 @@ INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_decription, trf
 	('+79123456783', '19/07/2020', 'SMS', '+79876543216', 1, 0),
 	('+79123456782', '20/08/2021', 'SMS', '+79876543217', 1, 0),
 	('+79123456781', '21/09/2020', 'SMS', '+79876543218', 1, 0),
-	('+79123456780', '22/10/2021', 'SMS', '+79876543219', 1, 0),
+	('+79123456780', '22/10/2021', 'SMS', '+79876543219', 2, 0),
 	('+79123456779', '23/11/2020', 'SMS', '+79876543220', 1, 3),
 	('+79123456778', '24/12/2021', 'SMS', '+79876543221', 1, 0),
 	('+79123456777', '01/01/2020', 'SMS', '+79876543222', 1, 0),
@@ -282,33 +282,33 @@ INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_decription, trf
 	('+79123456767', '17/05/2020', 'Internet', 'example2.ru', 5348, 0),
 	('+79123456766', '18/06/2021', 'Internet', 'example3.net', 31987, 0),
 
-	('+79123456789', '03/01/2020', 'Outgoing call', '+79876543210', 1, 0),
-	('+79123456788', '04/02/2021', 'Outgoing call', '+79876543211', 2, 0),
-	('+79123456787', '05/03/2020', 'Outgoing call', '+79876543212', 3, 0),
-	('+79123456786', '06/04/2021', 'Outgoing call', '+79876543213', 4, 0),
-	('+79123456785', '07/05/2020', 'Outgoing call', '+79876543214', 5, 0),
-	('+79123456784', '08/01/2021', 'Outgoing call', '+79876543215', 6, 0),
-	('+79123456783', '09/02/2020', 'Outgoing call', '+79876543216', 7, 0),
-	('+79123456782', '02/03/2021', 'Outgoing call', '+79876543217', 8, 0),
-	('+79123456781', '01/04/2020', 'Outgoing call', '+79876543218', 9, 0),
+	('+79123456789', '03/01/2020', 'Outgoing call', '+79876543210', 21, 0),
+	('+79123456788', '04/02/2021', 'Outgoing call', '+79876543211', 12, 0),
+	('+79123456787', '05/03/2020', 'Outgoing call', '+79876543212', 23, 0),
+	('+79123456786', '06/04/2021', 'Outgoing call', '+79876543213', 14, 0),
+	('+79123456785', '07/05/2020', 'Outgoing call', '+79876543214', 25, 0),
+	('+79123456784', '08/01/2021', 'Outgoing call', '+79876543215', 16, 0),
+	('+79123456783', '09/02/2020', 'Outgoing call', '+79876543216', 27, 0),
+	('+79123456782', '02/03/2021', 'Outgoing call', '+79876543217', 18, 0),
+	('+79123456781', '01/04/2020', 'Outgoing call', '+79876543218', 29, 0),
 	('+79123456780', '12/05/2021', 'Outgoing call', '+79876543219', 10, 0),
-	('+79123456779', '13/01/2020', 'Outgoing call', '+79876543220', 11, 0),
-	('+79123456778', '14/02/2021', 'Outgoing call', '+79876543221', 12, 0),
-	('+79123456777', '15/03/2020', 'Outgoing call', '+79876543222', 13, 0),
+	('+79123456779', '13/01/2020', 'Outgoing call', '+79876543220', 21, 0),
+	('+79123456778', '14/02/2021', 'Outgoing call', '+79876543221', 32, 0),
+	('+79123456777', '15/03/2020', 'Outgoing call', '+79876543222', 23, 0),
 	('+79123456776', '03/04/2021', 'Outgoing call', '+79876543223', 14, 0),
-	('+79123456775', '04/05/2020', 'Outgoing call', '+79876543224', 15, 0),
-	('+79123456774', '05/01/2021', 'Outgoing call', '+79876543225', 16, 0),
+	('+79123456775', '04/05/2020', 'Outgoing call', '+79876543224', 35, 0),
+	('+79123456774', '05/01/2021', 'Outgoing call', '+79876543225', 26, 0),
 	('+79123456773', '06/02/2020', 'Outgoing call', '+79876543226', 17, 0),
-	('+79123456772', '07/03/2021', 'Outgoing call', '+79876543227', 18, 0),
-	('+79123456771', '08/04/2020', 'Outgoing call', '+79876543228', 19, 0),
+	('+79123456772', '07/03/2021', 'Outgoing call', '+79876543227', 38, 0),
+	('+79123456771', '08/04/2020', 'Outgoing call', '+79876543228', 29, 0),
 	('+79123456770', '09/05/2021', 'Outgoing call', '+79876543229', 20, 0),
-	('+79123456769', '07/01/2020', 'Outgoing call', '+79876543230', 21, 0),
+	('+79123456769', '07/01/2020', 'Outgoing call', '+79876543230', 31, 0),
 	('+79123456768', '01/02/2021', 'Outgoing call', '+79876543231', 22, 2),
-	('+79123456767', '12/03/2020', 'Outgoing call', '+79876543232', 23, 6),
+	('+79123456767', '12/03/2020', 'Outgoing call', '+79876543232', 33, 6),
 	('+79123456766', '13/04/2021', 'Outgoing call', '+79876543233', 24, 1),
 	
 	('+79123456789', '04/09/2020', 'SMS', '+79876543210', 1, 0),
-	('+79123456788', '05/10/2021', 'SMS', '+79876543211', 1, 0),
+	('+79123456788', '05/10/2021', 'SMS', '+79876543211', 2, 0),
 	('+79123456787', '06/11/2020', 'SMS', '+79876543212', 1, 0),
 	('+79123456786', '07/12/2021', 'SMS', '+79876543213', 1, 0),
 	('+79123456785', '08/01/2020', 'SMS', '+79876543214', 1, 0),
@@ -325,34 +325,83 @@ INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_decription, trf
 	('+79123456774', '04/03/2021', 'SMS', '+79876543225', 1, 0),
 	('+79123456773', '05/04/2020', 'SMS', '+79876543226', 1, 0),
 	('+79123456772', '06/05/2021', 'SMS', '+79876543227', 1, 3),
-	('+79123456771', '07/07/2020', 'SMS', '+79876543228', 1, 0),
+	('+79123456771', '07/07/2020', 'SMS', '+79876543228', 2, 0),
 	('+79123456770', '08/02/2021', 'SMS', '+79876543229', 1, 0),
 	('+79123456769', '09/03/2020', 'SMS', '+79876543230', 1, 0),
 	('+79123456768', '11/04/2021', 'SMS', '+79876543231', 1, 0),
-	('+79123456767', '20/05/2020', 'SMS', '+79876543232', 1, 0),
+	('+79123456767', '20/05/2020', 'SMS', '+79876543232', 3, 0),
 	('+79123456766', '16/09/2021', 'SMS', '+79876543233', 1, 3),
 	
-	('+79123456789', '01/12/2020', 'Internet', 'vk.com', 4512, 0),
-	('+79123456788', '02/01/2021', 'Internet', 'youtube.com', 22917, 0),
-	('+79123456787', '03/02/2020', 'Internet', 'telegram.org', 5610, 0),
-	('+79123456786', '04/03/2021', 'Internet', 'example.com', 10923, 0),
-	('+79123456785', '05/04/2020', 'Internet', 'example2.ru', 5348, 0),
-	('+79123456784', '01/05/2021', 'Internet', 'example3.net', 31987, 0),
-	('+79123456783', '02/06/2020', 'Internet', 'vk.com', 4512, 0),
-	('+79123456782', '03/12/2021', 'Internet', 'youtube.com', 22917, 0),
-	('+79123456781', '04/01/2020', 'Internet', 'telegram.org', 5610, 0),
-	('+79123456780', '05/02/2021', 'Internet', 'example.com', 10923, 0),
-	('+79123456779', '10/03/2020', 'Internet', 'example2.ru', 5348, 0),
-	('+79123456778', '11/04/2021', 'Internet', 'example3.net', 31987, 0),
-	('+79123456777', '12/05/2020', 'Internet', 'vk.com', 4512, 0),
-	('+79123456776', '13/06/2021', 'Internet', 'youtube.com', 22917, 0),
-	('+79123456775', '14/09/2020', 'Internet', 'telegram.org', 5610, 0),
-	('+79123456774', '15/10/2021', 'Internet', 'example.com', 10923, 0),
-	('+79123456773', '11/11/2020', 'Internet', 'example2.ru', 5348, 0),
-	('+79123456772', '12/12/2021', 'Internet', 'example3.net', 31987, 0),
-	('+79123456771', '13/01/2020', 'Internet', 'vk.com', 4512, 0),
-	('+79123456770', '14/02/2021', 'Internet', 'youtube.com', 22917, 0),
-	('+79123456769', '15/03/2020', 'Internet', 'telegram.org', 5610, 0),
-	('+79123456768', '16/04/2021', 'Internet', 'example.com', 10923, 0),
-	('+79123456767', '17/05/2020', 'Internet', 'example2.ru', 5348, 0),
-	('+79123456766', '18/06/2021', 'Internet', 'example3.net', 31987, 0);
+	('+79123456789', '01/12/2020', 'Internet', 'vk.com', 14512, 0),
+	('+79123456788', '02/01/2021', 'Internet', 'youtube.com', 222917, 0),
+	('+79123456787', '03/02/2020', 'Internet', 'telegram.org', 35610, 0),
+	('+79123456786', '04/03/2021', 'Internet', 'example.com', 410923, 0),
+	('+79123456785', '05/04/2020', 'Internet', 'example2.ru', 55348, 0),
+	('+79123456784', '01/05/2021', 'Internet', 'example3.net', 631987, 0),
+	('+79123456783', '02/06/2020', 'Internet', 'vk.com', 74512, 0),
+	('+79123456782', '03/12/2021', 'Internet', 'youtube.com', 822917, 0),
+	('+79123456781', '04/01/2020', 'Internet', 'telegram.org', 95610, 0),
+	('+79123456780', '05/02/2021', 'Internet', 'example.com', 110923, 0),
+	('+79123456779', '10/03/2020', 'Internet', 'example2.ru', 25348, 0),
+	('+79123456778', '11/04/2021', 'Internet', 'example3.net', 331987, 0),
+	('+79123456777', '12/05/2020', 'Internet', 'vk.com', 44512, 0),
+	('+79123456776', '13/06/2021', 'Internet', 'youtube.com', 522917, 0),
+	('+79123456775', '14/09/2020', 'Internet', 'telegram.org', 65610, 0),
+	('+79123456774', '15/10/2021', 'Internet', 'example.com', 710923, 0),
+	('+79123456773', '11/11/2020', 'Internet', 'example2.ru', 85348, 0),
+	('+79123456772', '12/12/2021', 'Internet', 'example3.net', 931987, 0),
+	('+79123456771', '13/01/2020', 'Internet', 'vk.com', 14512, 0),
+	('+79123456770', '14/02/2021', 'Internet', 'youtube.com', 222917, 0),
+	('+79123456769', '15/03/2020', 'Internet', 'telegram.org', 35610, 0),
+	('+79123456768', '16/04/2021', 'Internet', 'example.com', 410923, 0),
+	('+79123456767', '17/05/2020', 'Internet', 'example2.ru', 55348, 0),
+	('+79123456766', '18/06/2021', 'Internet', 'example3.net', 631987, 0);
+
+DECLARE @phones TABLE (
+    phone VARCHAR(20) NOT NULL
+)
+
+DECLARE @types TABLE (
+    type_ VARCHAR(15) NOT NULL
+)
+
+INSERT INTO @types VALUES ('Outgoing call'), ('SMS'), ('Internet')
+
+INSERT INTO @phones
+SELECT sub_phone_number FROM Subscriber
+
+DECLARE @startDate DATETIME = '01/11/2019'
+DECLARE @endDate DATETIME = '31/12/2022'
+
+DECLARE @newTraffic TABLE (
+    trf_subscriber VARCHAR(20) NOT NULL,
+    trf_datetime DATETIME NOT NULL,
+    trf_type VARCHAR(15) NOT NULL,
+    trf_description VARCHAR(255) NOT NULL,
+    trf_amount DECIMAL NOT NULL,
+    trf_pay SMALLMONEY NOT NULL
+)
+
+DECLARE @count INT = 1
+WHILE @count <= 200
+BEGIN
+    INSERT INTO @newTraffic (trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay)
+    SELECT TOP (1) phone, DATEADD(day, ABS(CHECKSUM(NEWID())) % DATEDIFF(day, @startDate, @endDate), @startDate) AS q, (SELECT TOP(1) type_ FROM @types ORDER BY NEWID()) AS trf_type,
+    CASE (SELECT TOP(1) type_ FROM @types ORDER BY NEWID())
+        WHEN 'Outgoing call' THEN CAST(ABS(CHECKSUM(NEWID())) % 1000000000 + 1000000000 AS VARCHAR(20))
+        WHEN 'SMS' THEN CAST(ABS(CHECKSUM(NEWID())) % 1000000000 + 1000000000 AS VARCHAR(20))
+        WHEN 'Internet' THEN 'www.' + LEFT(LOWER(NEWID()), 5) + '.com'
+    END,
+    CASE (SELECT TOP(1) type_ FROM @types ORDER BY NEWID())
+        WHEN 'Outgoing call' THEN CAST(ABS(CHECKSUM(NEWID())) % 30 + 1 AS DECIMAL(5, 2))
+        WHEN 'SMS' THEN CAST(ABS(CHECKSUM(NEWID())) % 30 + 1 AS DECIMAL(5, 2))
+        WHEN 'Internet' THEN CAST(ABS(CHECKSUM(NEWID())) % 180001 + 2000 AS DECIMAL(10, 2))
+    END,
+    0
+    FROM @phones
+    ORDER BY NEWID()
+    SET @count = @count + 1
+END
+
+INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_decription, trf_amount, trf_pay)
+SELECT trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay FROM @newTraffic
