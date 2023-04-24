@@ -403,5 +403,5 @@ BEGIN
     SET @count = @count + 1
 END
 
-INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_decription, trf_amount, trf_pay)
+INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay)
 SELECT trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay FROM @newTraffic

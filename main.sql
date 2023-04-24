@@ -304,4 +304,28 @@ END;
 GO
 
 
-CREATE OR ALTER TRIGGER trig_trafficInput
+CREATE OR ALTER TRIGGER trig_trafficInput ON [Traffic]
+AFTER INSERT
+AS
+BEGIN
+	DECLARE @ins_type VARCHAR(15);
+	SET @ins_type = (SELECT trf_type FROM INSERTED);
+	IF (@ins_type = 'Outgoing call' AND (SELECT pck_minutes FROM [Package] WHERE pck_subscriber = (SELECT trf_subscriber FROM INSERTED)) IS NOT NULL)
+	BEGIN
+		UPDATE [Package]
+		SET pck_minutes = pck_minutes - (SELECT trf_amount FROM INSERTED) WHERE pck_subscriber = (SELECT trf_subscriber FROM INSERTED);
+		IF ((SELECT pck_minutes FROM [Package] WHERE pck_subscriber = (SELECT trf_subscriber FROM INSERTED)) < 0 )
+		BEGIN
+			UPDATE [Traffic]
+			SET trf_pay = -(SELECT pck_minutes FROM [Package] WHERE pck_subscriber = (SELECT trf_subscriber FROM INSERTED)) WHERE trf_id = (SELECT trf_id FROM INSERTED);
+			UPDATE [Subscriber]
+			SET sub_balance = sub_balance - (SELECT trf_pay FROM [Traffic] WHERE trf_id = (SELECT trf_id FROM INSERTED)) WHERE sub_phone_number = (SELECT trf_subscriber FROM INSERTED);
+			--UPDATE [Subscriber]
+			--SET sub_balance = sub_balance + 5 WHERE sub_name = '+79123456789';--(SELECT trf_subscriber FROM INSERTED);
+			UPDATE [Package]
+			SET pck_minutes = 0 WHERE pck_subscriber = (SELECT trf_subscriber FROM INSERTED);
+		END
+	END
+END;
+
+GO
