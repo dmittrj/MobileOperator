@@ -259,26 +259,46 @@ BEGIN
 	GROUP BY sub_tariff, trf_mon, trf_year, trf_type) AS q3
 	JOIN Tariff ON sub_tariff = tar_name;
 
-	SELECT *
-	FROM #traffic_tariff;
-
 	SELECT t_tariff AS Tariff, 'Reduce minutes amount' AS Advice
 	FROM #traffic_tariff
 	WHERE t_type = 'Outgoing call' AND t_mins IS NOT NULL
 	GROUP BY t_tariff
 	HAVING AVG(t_mins - t_amount) > (SELECT tar_minutes FROM Tariff WHERE tar_name = t_tariff) * 0.5
 	UNION
+
 	SELECT t_tariff AS Tariff, 'Reduce SMS amount' AS Advice
 	FROM #traffic_tariff
 	WHERE t_type = 'SMS' AND t_sms IS NOT NULL
 	GROUP BY t_tariff
 	HAVING AVG(t_sms - t_amount) > (SELECT tar_sms FROM Tariff WHERE tar_name = t_tariff) * 0.5
 	UNION
+
 	SELECT t_tariff AS Tariff, 'Reduce GB amount' AS Advice
 	FROM #traffic_tariff
 	WHERE t_type = 'Internet' AND t_internet IS NOT NULL
 	GROUP BY t_tariff
-	HAVING AVG(t_internet * 1024 - t_amount / 1024) > (SELECT tar_internet FROM Tariff WHERE tar_name = t_tariff) * 0.5;
+	HAVING AVG(t_internet * 1024 - t_amount / 1024) > (SELECT tar_internet FROM Tariff WHERE tar_name = t_tariff) * 0.5
+	UNION
+
+	SELECT t_tariff AS Tariff, 'Increase minutes amount' AS Advice
+	FROM #traffic_tariff
+	WHERE t_type = 'Outgoing call' AND t_mins IS NOT NULL
+	GROUP BY t_tariff
+	HAVING AVG(t_amount - t_mins) > (SELECT tar_minutes FROM Tariff WHERE tar_name = t_tariff) * 0.5
+	UNION
+
+	SELECT t_tariff AS Tariff, 'Increase SMS amount' AS Advice
+	FROM #traffic_tariff
+	WHERE t_type = 'SMS' AND t_sms IS NOT NULL
+	GROUP BY t_tariff
+	HAVING AVG(t_amount - t_sms) > (SELECT tar_sms FROM Tariff WHERE tar_name = t_tariff) * 0.5
+	UNION
+
+	SELECT t_tariff AS Tariff, 'Increase GB amount' AS Advice
+	FROM #traffic_tariff
+	WHERE t_type = 'Internet' AND t_internet IS NOT NULL
+	GROUP BY t_tariff
+	HAVING AVG(t_amount / 1024 - t_internet * 1024) > (SELECT tar_internet FROM Tariff WHERE tar_name = t_tariff) * 0.5;
 END;
 
 GO
