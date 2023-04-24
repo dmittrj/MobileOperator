@@ -238,22 +238,47 @@ AS
 BEGIN
 	CREATE TABLE #traffic_tariff (
 		t_tariff NVARCHAR(32), 
-		t_datetime DATETIME, 
+		t_mon INT,
+		t_year INT,
 		t_type VARCHAR(15), 
 		t_amount INT, 
-		t_pay SMALLMONEY
+		t_pay SMALLMONEY,
+		t_mins INT NULL,
+		t_sms INT NULL,
+		t_internet REAL NULL,
+		t_cost SMALLMONEY
 	);
 	INSERT INTO #traffic_tariff
-	SELECT sub_tariff, trf_mon, trf_year, trf_type, SUM(trf_amount) AS amount, SUM(trf_pay) AS pay FROM
+	SELECT sub_tariff, trf_mon, trf_year, trf_type, amount, pay, tar_minutes, tar_sms, tar_internet, tar_cost FROM
+	(SELECT sub_tariff, trf_mon, trf_year, trf_type, SUM(trf_amount) AS amount, SUM(trf_pay) AS pay FROM
 	(SELECT sub_tariff, trf_datetime, trf_type, trf_amount, trf_pay, MONTH(trf_datetime) AS trf_mon, YEAR(trf_datetime) AS trf_year FROM
 	(SELECT *,
 		(SELECT TOP(1) sll_date FROM Sellings WHERE Subscriber.sub_phone_number = Sellings.sll_subscriber ORDER BY sll_date DESC) AS last_tariff_update
 	FROM Subscriber) AS q1
 	JOIN Traffic ON last_tariff_update <= trf_datetime AND sub_phone_number = trf_subscriber) AS q2
-	GROUP BY sub_tariff, trf_mon, trf_year, trf_type;
+	GROUP BY sub_tariff, trf_mon, trf_year, trf_type) AS q3
+	JOIN Tariff ON sub_tariff = tar_name;
 
-	SELECT *, MONTH(t_Datetime)
+	SELECT *
 	FROM #traffic_tariff;
+
+	SELECT t_tariff AS Tariff, 'Reduce minutes amount' AS Advice
+	FROM #traffic_tariff
+	WHERE t_type = 'Outgoing call' AND t_mins IS NOT NULL
+	GROUP BY t_tariff
+	HAVING AVG(t_mins - t_amount) > (SELECT tar_minutes FROM Tariff WHERE tar_name = t_tariff) * 0.5
+	UNION
+	SELECT t_tariff AS Tariff, 'Reduce SMS amount' AS Advice
+	FROM #traffic_tariff
+	WHERE t_type = 'SMS' AND t_sms IS NOT NULL
+	GROUP BY t_tariff
+	HAVING AVG(t_sms - t_amount) > (SELECT tar_sms FROM Tariff WHERE tar_name = t_tariff) * 0.5
+	UNION
+	SELECT t_tariff AS Tariff, 'Reduce GB amount' AS Advice
+	FROM #traffic_tariff
+	WHERE t_type = 'Internet' AND t_internet IS NOT NULL
+	GROUP BY t_tariff
+	HAVING AVG(t_internet * 1024 - t_amount / 1024) > (SELECT tar_internet FROM Tariff WHERE tar_name = t_tariff) * 0.5;
 END;
 
 GO
