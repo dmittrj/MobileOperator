@@ -206,7 +206,7 @@ VALUES
 	('+79123456766', '24/12/2019', 200);
 
 
-INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay) VALUES 
+/*INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay) VALUES 
 	('+79123456789', '01/01/2020', 'Outgoing call', '+79876543210', 1, 0),
 	('+79123456788', '02/02/2021', 'Outgoing call', '+79876543211', 2, 0),
 	('+79123456787', '03/03/2020', 'Outgoing call', '+79876543212', 3, 0),
@@ -355,7 +355,7 @@ INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_description, tr
 	('+79123456769', '15/03/2020', 'Internet', 'telegram.org', 35610, 0),
 	('+79123456768', '16/04/2021', 'Internet', 'example.com', 410923, 0),
 	('+79123456767', '17/05/2020', 'Internet', 'example2.ru', 55348, 0),
-	('+79123456766', '18/06/2021', 'Internet', 'example3.net', 631987, 0);
+	('+79123456766', '18/06/2021', 'Internet', 'example3.net', 631987, 0);*/
 
 DECLARE @phones TABLE (
     phone VARCHAR(20) NOT NULL
