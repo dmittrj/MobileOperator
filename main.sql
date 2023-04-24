@@ -319,7 +319,7 @@ BEGIN
 	BEGIN
 		UPDATE [Package]
 		SET pck_minutes = pck_minutes - @ins_amount WHERE pck_subscriber = @ins_subscriber;
-		IF ((SELECT pck_minutes FROM [Package] WHERE pck_subscriber = @ins_subscriber) < 0 )
+		IF ((SELECT pck_minutes FROM [Package] WHERE pck_subscriber = @ins_subscriber) < 0 AND (SELECT tar_minute_cost FROM [Tariff] WHERE tar_name = @ins_tariff) IS NOT NULL)
 		BEGIN
 			UPDATE [Traffic]
 			SET trf_pay = -(SELECT pck_minutes FROM [Package] WHERE pck_subscriber = @ins_subscriber)* (SELECT tar_minute_cost FROM [Tariff] WHERE tar_name = @ins_tariff) WHERE trf_id = (SELECT trf_id FROM INSERTED);
@@ -327,6 +327,36 @@ BEGIN
 			SET sub_balance = sub_balance - (SELECT trf_pay FROM [Traffic] WHERE trf_id = (SELECT trf_id FROM INSERTED)) WHERE sub_phone_number = @ins_subscriber;
 			UPDATE [Package]
 			SET pck_minutes = 0 WHERE pck_subscriber = @ins_subscriber;
+		END
+	END
+
+	ELSE IF (@ins_type = 'SMS' AND (SELECT tar_sms FROM [Tariff] WHERE tar_name = @ins_tariff) IS NOT NULL)
+	BEGIN
+		UPDATE [Package]
+		SET pck_sms = pck_sms - @ins_amount WHERE pck_subscriber = @ins_subscriber;
+		IF ((SELECT pck_sms FROM [Package] WHERE pck_subscriber = @ins_subscriber) < 0 AND (SELECT tar_sms_cost FROM [Tariff] WHERE tar_name = @ins_tariff) IS NOT NULL)
+		BEGIN
+			UPDATE [Traffic]
+			SET trf_pay = -(SELECT pck_sms FROM [Package] WHERE pck_subscriber = @ins_subscriber)* (SELECT tar_sms_cost FROM [Tariff] WHERE tar_name = @ins_tariff) WHERE trf_id = (SELECT trf_id FROM INSERTED);
+			UPDATE [Subscriber]
+			SET sub_balance = sub_balance - (SELECT trf_pay FROM [Traffic] WHERE trf_id = (SELECT trf_id FROM INSERTED)) WHERE sub_phone_number = @ins_subscriber;
+			UPDATE [Package]
+			SET pck_sms = 0 WHERE pck_subscriber = @ins_subscriber;
+		END
+	END
+
+	ELSE IF (@ins_type = 'Internet' AND (SELECT tar_internet FROM [Tariff] WHERE tar_name = @ins_tariff) IS NOT NULL)
+	BEGIN
+		UPDATE [Package]
+		SET pck_internet = pck_internet - @ins_amount WHERE pck_subscriber = @ins_subscriber;
+		IF ((SELECT pck_internet FROM [Package] WHERE pck_subscriber = @ins_subscriber) < 0 AND (SELECT tar_mb_cost FROM [Tariff] WHERE tar_name = @ins_tariff) IS NOT NULL)
+		BEGIN
+			UPDATE [Traffic]
+			SET trf_pay = -(SELECT pck_internet FROM [Package] WHERE pck_subscriber = @ins_subscriber)* (SELECT tar_mb_cost FROM [Tariff] WHERE tar_name = @ins_tariff) WHERE trf_id = (SELECT trf_id FROM INSERTED);
+			UPDATE [Subscriber]
+			SET sub_balance = sub_balance - (SELECT trf_pay FROM [Traffic] WHERE trf_id = (SELECT trf_id FROM INSERTED)) WHERE sub_phone_number = @ins_subscriber;
+			UPDATE [Package]
+			SET pck_internet = 0 WHERE pck_subscriber = @ins_subscriber;
 		END
 	END
 END;
