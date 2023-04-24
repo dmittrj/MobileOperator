@@ -197,7 +197,7 @@ BEGIN
 		SELECT
 			trf_datetime AS [Date & Time],
 			trf_type AS [Type],
-			trf_decription AS [Description],
+			trf_description AS [Description],
 			trf_amount AS [Amount of Usage],
 			trf_pay AS [To Pay]
 		FROM [Traffic]
@@ -302,3 +302,6 @@ BEGIN
 END;
 
 GO
+
+
+CREATE OR ALTER TRIGGER trig_trafficInput
