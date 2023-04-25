@@ -385,7 +385,7 @@ DECLARE @newTraffic TABLE (
 DECLARE @count INT = 1
 WHILE @count <= 200
 BEGIN
-    INSERT INTO @newTraffic (trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay)
+    INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay)
     SELECT TOP (1) phone, DATEADD(day, ABS(CHECKSUM(NEWID())) % DATEDIFF(day, @startDate, @endDate), @startDate) AS q, (SELECT TOP(1) type_ FROM @types ORDER BY NEWID()) AS trf_type,
     CASE (SELECT TOP(1) type_ FROM @types ORDER BY NEWID())
         WHEN 'Outgoing call' THEN CAST(ABS(CHECKSUM(NEWID())) % 1000000000 + 1000000000 AS VARCHAR(20))
@@ -403,5 +403,5 @@ BEGIN
     SET @count = @count + 1
 END
 
-INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay)
-SELECT trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay FROM @newTraffic
+--INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay)
+--SELECT trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay FROM @newTraffic
