@@ -360,5 +360,43 @@ BEGIN
 		END
 	END
 END;
+GO
 
+CREATE OR ALTER TRIGGER trig_tariffInput ON [Tariff]
+AFTER INSERT
+AFTER UPDATE
+AS
+BEGIN
+	IF ((SELECT tar_minutes FROM INSERTED) IS NULL)
+	BEGIN
+		UPDATE [Tariff]
+		SET tar_minute_cost = NULL WHERE tar_name = (SELECT tar_name FROM INSERTED);
+	END;
+	IF ((SELECT tar_minutes FROM INSERTED) IS NOT NULL AND (SELECT tar_minute_cost FROM INSERTED) IS NULL)
+	BEGIN
+		UPDATE [Tariff]
+		SET tar_minute_cost = 0 WHERE tar_name = (SELECT tar_name FROM INSERTED);
+	END;
+
+	IF ((SELECT tar_sms FROM INSERTED) IS NULL)
+	BEGIN
+		UPDATE [Tariff]
+		SET tar_sms_cost = NULL WHERE tar_name = (SELECT tar_name FROM INSERTED);
+	END;
+	IF ((SELECT tar_sms FROM INSERTED) IS NOT NULL AND (SELECT tar_sms_cost FROM INSERTED) IS NULL)
+	BEGIN
+		UPDATE [Tariff]
+		SET tar_sms_cost = 0 WHERE tar_name = (SELECT tar_name FROM INSERTED);
+	END;
+
+	IF ((SELECT tar_internet FROM INSERTED) IS NULL)
+	BEGIN
+		UPDATE [Tariff]
+		SET tar_mb_cost = NULL WHERE tar_name = (SELECT tar_name FROM INSERTED);
+	END;
+	IF ((SELECT tar_internet FROM INSERTED) IS NOT NULL AND (SELECT tar_mb_cost FROM INSERTED) IS NULL)
+	BEGIN
+		UPDATE [Tariff]
+		SET tar_mb_cost = 0 WHERE tar_name = (SELECT tar_name FROM INSERTED);
+	END;
 GO
