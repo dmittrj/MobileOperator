@@ -9,6 +9,12 @@ FROM Subscriber
 GO
 
 
+-- View all tariffs ready to be sold
+SELECT *
+FROM Tariff
+WHERE tar_archived = 0
+
+
 -- Sorting tariffs according to popularity
 SELECT sub_tariff AS [Tariff Name], COUNT(sub_tariff) AS [Number of subscribers],
 	(COUNT(sub_tariff) * 100 / (SELECT COUNT(*) FROM Subscriber)) AS [Percentage]
