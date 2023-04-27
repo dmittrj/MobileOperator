@@ -55,3 +55,4 @@ WHERE sub_phone_number = '+79123456788';
 EXECUTE CreateDetailing '+79123456778', '01/01/2020', '31/12/2021', 0;
 EXECUTE CreateSellingsSummary '01/02/2020', '01/05/2020';
 EXECUTE UpdateTariffGrid;
+EXECUTE ChooseTariff 1000, 500, 5, 101;

@@ -303,7 +303,35 @@ BEGIN
 	GROUP BY t_tariff
 	HAVING AVG(t_amount - t_internet * 1024) > (SELECT tar_internet FROM Tariff WHERE tar_name = t_tariff) * 0.5;
 END;
+GO
 
+CREATE OR ALTER PROCEDURE ChooseTariff (@w_minutes INT, @w_sms INT, @w_gb REAL, @w_speed INT)
+AS
+BEGIN
+	CREATE TABLE #temp_tariffs (
+		t_name NVARCHAR(32),
+		t_description NVARCHAR(100),
+		t_restrictions NVARCHAR(100),
+		t_minutes INT,
+		t_sms INT,
+		t_gb REAL,
+		t_speed INT
+	)
+	INSERT INTO #temp_tariffs 
+	SELECT tar_name, tar_description, tar_restrictions, tar_minutes, tar_sms, tar_internet, tar_internet_speed FROM [Tariff] WHERE tar_archived = 0;
+	UPDATE #temp_tariffs
+	SET t_minutes = (SELECT TOP(1) tar_minutes FROM [Tariff] WHERE tar_archived = 0 ORDER BY tar_minutes DESC) + 1 WHERE t_minutes IS NULL;
+	UPDATE #temp_tariffs
+	SET t_sms = (SELECT TOP(1) tar_sms FROM [Tariff] WHERE tar_archived = 0 ORDER BY tar_sms DESC) + 1 WHERE t_sms IS NULL;
+	UPDATE #temp_tariffs
+	SET t_gb = (SELECT TOP(1) tar_internet FROM [Tariff] WHERE tar_archived = 0 ORDER BY tar_internet DESC) + 1 WHERE t_gb IS NULL;
+	UPDATE #temp_tariffs
+	SET t_speed = (SELECT TOP(1) tar_internet_speed FROM [Tariff] WHERE tar_archived = 0 ORDER BY tar_internet_speed DESC) + 1 WHERE t_speed IS NULL;
+	SELECT t_name, t_description, t_restrictions, tar_minutes, tar_sms, tar_internet, tar_internet_speed
+	FROM #temp_tariffs
+	JOIN [Tariff] ON t_name = tar_name
+	ORDER BY CAST(ABS(t_minutes - @w_minutes) AS REAL) / (SELECT SUM(t_minutes) FROM #temp_tariffs) + CAST(ABS(t_sms - @w_sms) AS REAL) / (SELECT SUM(t_sms) FROM #temp_tariffs) + CAST(ABS(t_gb - @w_gb) AS REAL) / (SELECT SUM(t_gb) FROM #temp_tariffs) + CAST(ABS(t_speed - @w_speed) AS REAL) / (SELECT SUM(t_speed) FROM #temp_tariffs) ASC;
+END;
 GO
 
 
