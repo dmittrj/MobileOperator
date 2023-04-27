@@ -345,7 +345,7 @@ BEGIN
 		END
 	END
 
-	ELSE IF (@ins_type = 'Internet' AND (SELECT tar_internet FROM [Tariff] WHERE tar_name = @ins_tariff) IS NOT NULL)
+	ELSE IF (@ins_type = 'Internet' AND (SELECT tar_internet FROM [Tariff] WHERE tar_name = @ins_tariff) IS NOT NULL AND NOT EXISTS (SELECT * FROM [UnlimitedServices] WHERE unl_tariff = @ins_tariff AND unl_service LIKE CONCAT('%', (SELECT trf_description FROM INSERTED), '%')))
 	BEGIN
 		UPDATE [Package]
 		SET pck_internet = pck_internet - @ins_amount WHERE pck_subscriber = @ins_subscriber;
