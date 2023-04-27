@@ -37,7 +37,7 @@ JOIN Package ON sub_phone_number = Package.pck_subscriber
 WHERE sub_phone_number = '+79123456788';
 
 INSERT INTO Traffic (trf_subscriber, trf_datetime, trf_type, trf_description, trf_amount, trf_pay) 
-VALUES ('+79123456788', '24/04/2023', 'Internet', 'telegragm.org', 2, 0);
+VALUES ('+79123456788', '24/04/2023', 'Internet', 'telegram.org', 2, 0);
 
 SELECT *
 FROM Subscriber
