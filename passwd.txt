@@ -1,0 +1,7 @@
+Here's password list for database
+The passwords are just examples. Don't use passwords like these to auth in real DBs
+
+CEOs
+  login            passwd
+* emp_CEO          PassGeneralDirector548
+* emp_CEO_deputy   PassZamDirectorf611

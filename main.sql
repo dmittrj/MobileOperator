@@ -397,7 +397,8 @@ BEGIN
 	(SELECT TOP(1) last_tar FROM @tariffs_table AS tai WHERE tai.coh_date = tao.coh_date GROUP BY last_tar ORDER BY COUNT(last_tar) DESC) AS pop_last
 	FROM @tariffs_table AS tao) AS qc
 	GROUP BY coh_date, pop_first, pop_last) AS qs
-END
+END;
+GO;
 
 
 CREATE OR ALTER TRIGGER trig_trafficInput ON [Traffic]
@@ -493,3 +494,11 @@ BEGIN
 	END;
 END
 GO
+
+-- Logins
+CREATE LOGIN [emp_CEO]
+	WITH PASSWORD = 'PassGeneralDirector548',
+	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
+CREATE LOGIN [emp_CEO_deputy]
+	WITH PASSWORD = 'PassZamDirectorf611',
+	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
