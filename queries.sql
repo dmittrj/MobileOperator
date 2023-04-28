@@ -56,3 +56,4 @@ EXECUTE CreateDetailing '+79123456778', '01/01/2020', '31/12/2021', 0;
 EXECUTE CreateSellingsSummary '01/02/2020', '01/05/2020';
 EXECUTE UpdateTariffGrid;
 EXECUTE ChooseTariff 1000, 500, 5, 101;
+EXEC SalesReportByCohorts '01/01/2019', '31/12/2023', 30;

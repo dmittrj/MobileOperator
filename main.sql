@@ -345,6 +345,60 @@ BEGIN
 END;
 GO
 
+CREATE OR ALTER PROCEDURE SalesReportByCohorts
+    @start_date DATE,
+    @end_date DATE,
+    @interval INT
+AS
+BEGIN
+	DECLARE @current_date DATE = @start_date;
+	DECLARE @cohort_table AS TABLE (
+		coh_date DATE
+	)
+	DECLARE @tariffs_table AS TABLE (
+		coh_date DATE,
+		first_tar NVARCHAR(32),
+		last_tar NVARCHAR(32),
+		tar2 INT,
+		tar3 INT,
+		tar4 INT,
+		tar5 INT,
+		tar6 INT
+	)
+	WHILE (@current_date < @end_date)
+	BEGIN
+		INSERT INTO @cohort_table VALUES (@current_date);
+		SET @current_date = DATEADD(day, @interval, @current_date);
+	END;
+	
+	INSERT INTO @tariffs_table
+	SELECT coh_date, sll_tariff, dbo.getTariff(sll_subscriber, DATEADD(day, @interval * 6, coh_date)), 
+	(CASE (dbo.getTariff(sll_subscriber, DATEADD(day, @interval * 2, coh_date))) WHEN sll_tariff THEN 1 ELSE 0 END) AS tariff2,
+	(CASE (dbo.getTariff(sll_subscriber, DATEADD(day, @interval * 3, coh_date))) WHEN sll_tariff THEN 1 ELSE 0 END) AS tariff3,
+	(CASE (dbo.getTariff(sll_subscriber, DATEADD(day, @interval * 4, coh_date))) WHEN sll_tariff THEN 1 ELSE 0 END) AS tariff4,
+	(CASE (dbo.getTariff(sll_subscriber, DATEADD(day, @interval * 5, coh_date))) WHEN sll_tariff THEN 1 ELSE 0 END) AS tariff5,
+	(CASE (dbo.getTariff(sll_subscriber, DATEADD(day, @interval * 6, coh_date))) WHEN sll_tariff THEN 1 ELSE 0 END) AS tariff6
+	FROM @cohort_table
+	JOIN [Sellings]
+	ON sll_date BETWEEN coh_date AND DATEADD(day, @interval, coh_date)
+	
+	SELECT coh_date, '100%' AS subs,
+	pop_first AS [Tariff],
+	CONCAT((coh2 * 100 / subs), '%') AS coh2,
+	CONCAT((coh3 * 100 / subs), '%') AS coh3,
+	CONCAT((coh4 * 100 / subs), '%') AS coh4,
+	CONCAT((coh5 * 100 / subs), '%') AS coh5,
+	CONCAT((coh6 * 100 / subs), '%') AS coh6,
+	pop_last AS [TurnInto]
+	FROM
+	(SELECT coh_date, COUNT(*) AS subs, SUM(tar2) AS coh2, SUM(tar3) AS coh3, SUM(tar4) AS coh4, SUM(tar5) AS coh5, SUM(tar6) AS coh6, pop_first, pop_last
+	FROM
+	(SELECT *, (SELECT TOP(1) first_tar FROM @tariffs_table AS tai WHERE tai.coh_date = tao.coh_date GROUP BY first_tar ORDER BY COUNT(first_tar) DESC) AS pop_first,
+	(SELECT TOP(1) last_tar FROM @tariffs_table AS tai WHERE tai.coh_date = tao.coh_date GROUP BY last_tar ORDER BY COUNT(last_tar) DESC) AS pop_last
+	FROM @tariffs_table AS tao) AS qc
+	GROUP BY coh_date, pop_first, pop_last) AS qs
+END
+
 
 CREATE OR ALTER TRIGGER trig_trafficInput ON [Traffic]
 AFTER INSERT
