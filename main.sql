@@ -335,6 +335,17 @@ END;
 GO
 
 
+CREATE OR ALTER FUNCTION getTariff (@sub PHONE, @date DATE)
+RETURNS NVARCHAR(32)
+BEGIN
+	RETURN (SELECT TOP(1) sll_tariff
+	FROM [Sellings]
+	WHERE sll_subscriber = @sub AND sll_date <= @date
+	ORDER BY sll_date DESC);
+END;
+GO
+
+
 CREATE OR ALTER TRIGGER trig_trafficInput ON [Traffic]
 AFTER INSERT
 AS
