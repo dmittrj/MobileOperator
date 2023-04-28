@@ -502,3 +502,78 @@ CREATE LOGIN [emp_CEO]
 CREATE LOGIN [emp_CEO_deputy]
 	WITH PASSWORD = 'PassZamDirectorf611',
 	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
+CREATE LOGIN [emp_SalesDep_Senior1]
+	WITH PASSWORD = 'PassStarshyKassir310',
+	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
+CREATE LOGIN [emp_SalesDep_Senior2]
+	WITH PASSWORD = 'PassStarshyKassir310',
+	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
+CREATE LOGIN [emp_SalesDep_Cashier1]
+	WITH PASSWORD = 'PassKassir995',
+	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
+CREATE LOGIN [emp_SalesDep_Cashier2]
+	WITH PASSWORD = 'PassKassir995',
+	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
+CREATE LOGIN [emp_SalesDep_ShopAssistant1]
+	WITH PASSWORD = 'PassKonsultant549',
+	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
+CREATE LOGIN [emp_SalesDep_ShopAssistant2]
+	WITH PASSWORD = 'PassKonsultant549',
+	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
+CREATE LOGIN [emp_AnalyticDep_SalesAnalytic1]
+	WITH PASSWORD = 'PassAnalitikProdazh712',
+	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
+CREATE LOGIN [emp_AnalyticDep_SalesAnalytic2]
+	WITH PASSWORD = 'PassAnalitikProdazh712',
+	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
+CREATE LOGIN [emp_Management_Marketing1]
+	WITH PASSWORD = 'PassMarketingMenedzher302',
+	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
+CREATE LOGIN [emp_Management_Marketing2]
+	WITH PASSWORD = 'PassMarketingMenedzher302',
+	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
+
+
+-- Users
+CREATE USER [CEO_Vinogradov_PE] FOR LOGIN [emp_CEO];
+CREATE USER [CEO_Gromovoy_IP] FOR LOGIN [emp_CEO_deputy];
+CREATE USER [Sales_Kirillova_VA] FOR LOGIN [emp_SalesDep_Senior1];
+CREATE USER [Sales_Vlasova_OP] FOR LOGIN [emp_SalesDep_Senior2];
+CREATE USER [Sales_Goryunova_SI] FOR LOGIN [emp_SalesDep_Cashier1];
+CREATE USER [Sales_Travin_OS] FOR LOGIN [emp_SalesDep_Cashier2];
+CREATE USER [Sales_Dmitriev_DR] FOR LOGIN [emp_SalesDep_ShopAssistant1];
+CREATE USER [Sales_Blinov_AA] FOR LOGIN [emp_SalesDep_ShopAssistant2];
+CREATE USER [Analytic_Dronov_EK] FOR LOGIN [emp_AnalyticDep_SalesAnalytic1];
+CREATE USER [Analytic_Petrov_DS] FOR LOGIN [emp_AnalyticDep_SalesAnalytic2];
+CREATE USER [Analytic_Frolova_GE] FOR LOGIN [emp_Management_Marketing1];
+CREATE USER [Analytic_Sviridov_AG] FOR LOGIN [emp_Management_Marketing2];
+
+
+-- Roles
+CREATE ROLE [SEO];
+ALTER ROLE [SEO] ADD MEMBER [CEO_Vinogradov_PE];
+ALTER ROLE [SEO] ADD MEMBER [CEO_Gromovoy_IP];
+
+CREATE ROLE [Cashier];
+ALTER ROLE [Cashier] ADD MEMBER [Sales_Goryunova_SI];
+ALTER ROLE [Cashier] ADD MEMBER [Sales_Travin_OS];
+ALTER ROLE [Cashier] ADD MEMBER [Sales_Kirillova_VA];
+ALTER ROLE [Cashier] ADD MEMBER [Sales_Vlasova_OP];
+
+CREATE ROLE [ShopAssistant];
+ALTER ROLE [ShopAssistant] ADD MEMBER [Sales_Dmitriev_DR];
+ALTER ROLE [ShopAssistant] ADD MEMBER [Sales_Blinov_AA];
+ALTER ROLE [ShopAssistant] ADD MEMBER [Sales_Kirillova_VA];
+ALTER ROLE [ShopAssistant] ADD MEMBER [Sales_Vlasova_OP];
+
+CREATE ROLE [SalesAnalytic];
+ALTER ROLE [SalesAnalytic] ADD MEMBER [Analytic_Dronov_EK];
+ALTER ROLE [SalesAnalytic] ADD MEMBER [Analytic_Petrov_DS];
+
+CREATE ROLE [MarketingManager];
+ALTER ROLE [MarketingManager] ADD MEMBER [Analytic_Frolova_GE]; 
+ALTER ROLE [MarketingManager] ADD MEMBER [Analytic_Sviridov_AG];
+
+
+-- Privilege
+

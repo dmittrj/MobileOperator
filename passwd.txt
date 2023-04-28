@@ -5,3 +5,17 @@ CEOs
   login            passwd
 * emp_CEO          PassGeneralDirector548
 * emp_CEO_deputy   PassZamDirectorf611
+
+Sales Department
+  login                         passwd
+* emp_SalesDep_Senior           PassStarshyKassir310
+* emp_SalesDep_Cashier          PassKassir995
+* emp_SalesDep_ShopAssistant1   PassKonsultant549
+
+Analytic Department
+  login                           passwd
+* emp_AnalyticDep_SalesAnalytic   PassAnalitikProdazh712
+
+Management Department
+  login                       passwd
+* emp_Management_Marketing1   PassMarketingMenedzher302
