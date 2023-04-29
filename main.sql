@@ -206,7 +206,7 @@ CREATE INDEX inx_tariff_arch ON [Tariff] (tar_archived);
 CREATE INDEX inx_unlim_tariff ON [UnlimitedServices] (unl_tariff);
 CREATE INDEX inx_pack_sub ON [Package] (pck_subscriber);
 CREATE INDEX inx_sell_sub ON [Sellings] (sll_subscriber);
-CREATE INDEX inx_sell_tariff ON [Tariff] (sll_tariff);
+CREATE INDEX inx_sell_tariff ON [Sellings] (sll_tariff);
 CREATE INDEX inx_traffic_sub ON [Traffic] (trf_subscriber);
 CREATE INDEX inx_traffic_date ON [Traffic] (trf_datetime);
 CREATE INDEX inx_bill_sub ON [Billings] (bll_subscriber);
@@ -526,7 +526,7 @@ BEGIN
 END
 GO
 
--- Logins
+/* Logins */
 CREATE LOGIN [emp_CEO]
 	WITH PASSWORD = 'PassGeneralDirector548',
 	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
@@ -565,7 +565,7 @@ CREATE LOGIN [emp_Management_Marketing2]
 	DEFAULT_DATABASE = [MobileOperator_by_DmitryBalabanov];
 
 
--- Users
+/* Users */
 CREATE USER [CEO_Vinogradov_PE] FOR LOGIN [emp_CEO];
 CREATE USER [CEO_Gromovoy_IP] FOR LOGIN [emp_CEO_deputy];
 CREATE USER [Sales_Kirillova_VA] FOR LOGIN [emp_SalesDep_Senior1];
@@ -580,7 +580,7 @@ CREATE USER [Analytic_Frolova_GE] FOR LOGIN [emp_Management_Marketing1];
 CREATE USER [Analytic_Sviridov_AG] FOR LOGIN [emp_Management_Marketing2];
 
 
--- Roles
+/* Roles */
 CREATE ROLE [SEO];
 ALTER ROLE [SEO] ADD MEMBER [CEO_Vinogradov_PE];
 ALTER ROLE [SEO] ADD MEMBER [CEO_Gromovoy_IP];
@@ -606,5 +606,8 @@ ALTER ROLE [MarketingManager] ADD MEMBER [Analytic_Frolova_GE];
 ALTER ROLE [MarketingManager] ADD MEMBER [Analytic_Sviridov_AG];
 
 
--- Privilege
+/* Privilege */
+
+
+/* Transparent encryption */
 
