@@ -192,6 +192,14 @@ ALTER TABLE [Billings] ADD CONSTRAINT fk_bll_subReplenished
 GO
 
 
+/* Index */
+CREATE INDEX inx_sub_pass ON [Subscriber] (sub_passport);
+CREATE INDEX inx_sub_join ON [Subscriber] (sub_joining_date);
+CREATE INDEX inx_sub_tariff ON [Subscriber] (sub_tariff);
+CREATE INDEX inx_sub_package ON [Subscriber] (sub_p);
+GO
+
+
 /* Checking balance */
 CREATE OR ALTER PROCEDURE CreateDetailing (@sub PHONE, @date_from DATE, @date_to DATE, @brief BIT)
 AS
