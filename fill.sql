@@ -145,7 +145,7 @@ VALUES
 	('+79123456766', 1020, 145, 6999540, 13);
 
 
-
+DISABLE TRIGGER trig_sellingsInput ON Sellings;
 INSERT INTO Sellings (sll_subscriber, sll_date, sll_tariff)
 VALUES
 	('+79123456789', '01/10/2021', 'Старт'),
@@ -177,6 +177,7 @@ VALUES
 	('+79123456768', '22/12/2022', 'VIP'),
 	('+79123456767', '23/02/2020', 'Чат'),
 	('+79123456766', '24/12/2019', 'Максимальный');
+ENABLE TRIGGER trig_sellingsInput ON Sellings;
 
 
 INSERT INTO Billings (bll_subscriber, bll_date, bll_money)

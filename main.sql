@@ -495,6 +495,16 @@ BEGIN
 END
 GO
 
+
+CREATE OR ALTER TRIGGER trig_sellingsInput ON [Sellings]
+AFTER INSERT
+AS
+BEGIN
+	UPDATE [Subscriber]
+	SET sub_tariff = (SELECT sll_tariff FROM INSERTED) WHERE sub_phone_number = (SELECT sll_subscriber FROM INSERTED);
+END
+GO
+
 -- Logins
 CREATE LOGIN [emp_CEO]
 	WITH PASSWORD = 'PassGeneralDirector548',
