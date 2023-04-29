@@ -610,4 +610,25 @@ ALTER ROLE [MarketingManager] ADD MEMBER [Analytic_Sviridov_AG];
 
 
 /* Transparent encryption */
+USE [master];
+DROP CERTIFICATE MyCertificate;
+GO
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = 'StrongPassword123';
+GO
+BACKUP SERVICE MASTER KEY TO FILE = 'F:\\MasterKeyBackup.enc' ENCRYPTION BY PASSWORD = 'StrongPassword123';
+GO
+CREATE CERTIFICATE MobileOperatorCertificate WITH SUBJECT = 'CEO_Vinogradov_PE';
+GO
+BACKUP CERTIFICATE [MobileOperatorCertificate] TO FILE = 'F:\\CertificateBackup.enc' 
+WITH PRIVATE KEY (FILE = 'F:\\PrivateKey.enc', ENCRYPTION BY PASSWORD = 'StrongPassword123');
+GO
 
+USE [MobileOperator_by_DmitryBalabanov]
+GO
+CREATE DATABASE ENCRYPTION KEY
+WITH ALGORITHM = AES_256
+ENCRYPTION BY SERVER CERTIFICATE MobileOperatorCertificate;
+GO
+ALTER DATABASE [MobileOperator_by_DmitryBalabanov]
+SET ENCRYPTION ON;
+GO
