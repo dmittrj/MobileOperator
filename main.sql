@@ -196,7 +196,7 @@ GO
 CREATE INDEX inx_sub_pass ON [Subscriber] (sub_passport);
 CREATE INDEX inx_sub_join ON [Subscriber] (sub_joining_date);
 CREATE INDEX inx_sub_tariff ON [Subscriber] (sub_tariff);
-CREATE INDEX inx_sub_package ON [Subscriber] (sub_p);
+CREATE INDEX inx_pass_address ON [Passport] (ppt_address);
 GO
 
 
