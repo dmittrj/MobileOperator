@@ -197,6 +197,19 @@ CREATE INDEX inx_sub_pass ON [Subscriber] (sub_passport);
 CREATE INDEX inx_sub_join ON [Subscriber] (sub_joining_date);
 CREATE INDEX inx_sub_tariff ON [Subscriber] (sub_tariff);
 CREATE INDEX inx_pass_address ON [Passport] (ppt_address);
+CREATE INDEX inx_tariff_date ON [Tariff] (tar_creating_date);
+CREATE INDEX inx_tariff_minutes ON [Tariff] (tar_minutes);
+CREATE INDEX inx_tariff_sms ON [Tariff] (tar_sms);
+CREATE INDEX inx_tariff_gb ON [Tariff] (tar_internet);
+CREATE INDEX inx_tariff_cost ON [Tariff] (tar_cost);
+CREATE INDEX inx_tariff_arch ON [Tariff] (tar_archived);
+CREATE INDEX inx_unlim_tariff ON [UnlimitedServices] (unl_tariff);
+CREATE INDEX inx_pack_sub ON [Package] (pck_subscriber);
+CREATE INDEX inx_sell_sub ON [Sellings] (sll_subscriber);
+CREATE INDEX inx_sell_tariff ON [Tariff] (sll_tariff);
+CREATE INDEX inx_traffic_sub ON [Traffic] (trf_subscriber);
+CREATE INDEX inx_traffic_date ON [Traffic] (trf_datetime);
+CREATE INDEX inx_bill_sub ON [Billings] (bll_subscriber);
 GO
 
 
