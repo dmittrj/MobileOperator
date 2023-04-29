@@ -56,7 +56,7 @@ CREATE TABLE Subscriber (
 
 /* Passport entity */
 CREATE TABLE Passport (
-	[ppt_series_number] PASSPORTDATA PRIMARY KEY,
+	[ppt_series_number] PASSPORTDATA PRIMARY KEY CONSTRAINT ch_sernum CHECK ([ppt_series_number] LIKE '[0-9][0-9][0-9][0-9] [0-9][0-9][0-9][0-9][0-9][0-9]'),
 	[ppt_issued_by] STRING NOT NULL,
 	[ppt_issued_date] DATE NOT NULL,
 	[ppt_division_code] CHAR(7) NOT NULL,
