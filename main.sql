@@ -529,6 +529,16 @@ BEGIN
 END
 GO
 
+
+CREATE OR ALTER TRIGGER trig_billingsInput ON [Billings]
+AFTER INSERT
+AS
+BEGIN
+	UPDATE [Subscriber]
+	SET sub_balance = sub_balance + (SELECT bll_money FROM INSERTED) WHERE sub_phone_number = (SELECT bll_subscriber FROM INSERTED);
+END
+GO
+
 /* Logins */
 CREATE LOGIN [emp_CEO]
 	WITH PASSWORD = 'PassGeneralDirector548',

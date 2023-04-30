@@ -179,7 +179,7 @@ VALUES
 	('+79123456766', '24/12/2019', 'Максимальный');
 ENABLE TRIGGER trig_sellingsInput ON Sellings;
 
-
+DISABLE TRIGGER trig_billingsInput ON Billings;
 INSERT INTO Billings (bll_subscriber, bll_date, bll_money)
 VALUES
 	('+79123456789', '01/10/2021', 100),
@@ -206,6 +206,7 @@ VALUES
 	('+79123456768', '22/12/2022', 200),
 	('+79123456767', '23/02/2020', 200),
 	('+79123456766', '24/12/2019', 200);
+ENABLE TRIGGER trig_billingsInput ON Billings;
 
 
 DECLARE @phones TABLE (
