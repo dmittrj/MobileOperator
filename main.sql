@@ -123,7 +123,10 @@ CREATE TABLE UnlimitedServices (
 	[unl_tariff] SMALLSTRING NOT NULL,
 	[unl_service] STRING NOT NULL
 )
-
+ALTER TABLE [UnlimitedServices] ADD CONSTRAINT fk_unl_tarIncluded 
+	FOREIGN KEY ([unl_tariff]) REFERENCES Tariff([tar_name])
+	ON DELETE CASCADE
+	ON UPDATE CASCADE;
 
 
 /* Package entity */
@@ -135,7 +138,7 @@ CREATE TABLE Package (
 	[pck_sms] INT NULL,
 	[pck_internet] REAL NULL,
 
-	[pck_billing_date] INT NULL DEFAULT NULL CONSTRAINT ch_billDay CHECK([pck_billing_date] >= 1 AND [pck_billing_date] <= 31),
+	[pck_billing_date] INT NULL DEFAULT NULL CONSTRAINT ch_billDay CHECK([pck_billing_date] >= 1 AND [pck_billing_date] <= 31)
 );
 ALTER TABLE [Package] ADD CONSTRAINT fk_pck_subOwn 
 	FOREIGN KEY ([pck_subscriber]) REFERENCES Subscriber([sub_phone_number])
