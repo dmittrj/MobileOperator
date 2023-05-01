@@ -15,6 +15,19 @@ FROM Tariff
 WHERE tar_archived = 0
 
 
+-- View address
+OPEN SYMMETRIC KEY SymKey_Encr_Address
+DECRYPTION BY PASSWORD = 'AddressSymmetricKeyPassword123';
+SELECT adr_id, 
+CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_region)) AS adr_region, 
+CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_city)) AS adr_city,
+CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_locality)) AS adr_locality,
+CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_street)) AS adr_street,
+CONVERT(NVARCHAR(10), DECRYPTBYKEY(adr_home)) AS adr_home,
+CONVERT(NVARCHAR(5), DECRYPTBYKEY(adr_apartment)) AS adr_apartment
+FROM HomeAddress;
+
+
 -- Sorting tariffs according to popularity
 SELECT sub_tariff AS [Tariff Name], COUNT(sub_tariff) AS [Number of subscribers],
 	(COUNT(sub_tariff) * 100 / (SELECT COUNT(*) FROM Subscriber)) AS [Percentage]
