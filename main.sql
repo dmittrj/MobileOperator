@@ -20,6 +20,12 @@ DROP TABLE IF EXISTS [Traffic];
 DROP TABLE IF EXISTS [UnlimitedServices];
 GO
 
+DROP VIEW IF EXISTS [SubscribersInfo];
+DROP VIEW IF EXISTS [AvaliableTariffs];
+GO
+
+DROP PROCEDURE IF EXISTS CreateDetailing;
+DROP FUNCTION IF EXISTS getTariff;
 
 /* Own types */
 DROP TYPE IF EXISTS PHONE
@@ -178,6 +184,10 @@ CREATE TABLE Traffic (
 	[trf_amount] DECIMAL NOT NULL,
 	[trf_pay] SMALLMONEY NOT NULL
 )
+ALTER TABLE [Traffic] ADD CONSTRAINT fk_trf_subDrain 
+	FOREIGN KEY ([trf_subscriber]) REFERENCES Subscriber([sub_phone_number])
+	ON DELETE CASCADE
+	ON UPDATE CASCADE;
 
 
 /* Billings entity */
@@ -424,7 +434,7 @@ BEGIN
 	FROM @tariffs_table AS tao) AS qc
 	GROUP BY coh_date, pop_first, pop_last) AS qs
 END;
-GO;
+GO
 
 
 CREATE OR ALTER TRIGGER trig_trafficInput ON [Traffic]
