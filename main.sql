@@ -552,6 +552,12 @@ JOIN [Passport] ON sub_passport = ppt_series_number
 JOIN [HomeAddress] ON ppt_address = adr_id;
 GO
 
+CREATE VIEW AvaliableTariffs
+AS SELECT *
+FROM [Tariff]
+WHERE tar_archived = 0;
+GO
+
 
 /* Logins */
 CREATE LOGIN [emp_CEO]
@@ -654,10 +660,43 @@ GRANT EXECUTE ON [SalesReportByCohorts] TO [CEO] WITH GRANT OPTION;
 GRANT SELECT, UPDATE, INSERT, DELETE ON [Subscriber] TO [Cashier];
 GRANT SELECT, UPDATE, INSERT, DELETE ON [Passport] TO [Cashier];
 GRANT SELECT, UPDATE, INSERT, DELETE ON [HomeAddress] TO [Cashier];
-GRANT SELECT ON [Tariff] TO [Cashier];
+GRANT SELECT ON [AvaliableTariffs] TO [Cashier];
 GRANT INSERT ON [Sellings] TO [Cashier];
 GRANT INSERT ON [Billings] TO [Cashier];
 GRANT EXECUTE ON [CreateDetailing] TO [Cashier];
+
+-- ShopAssistant
+GRANT SELECT ON [Subscriber] TO [ShopAssistant];
+GRANT SELECT ON [Passport] TO [ShopAssistant];
+GRANT SELECT ON [HomeAddress] TO [ShopAssistant];
+GRANT SELECT ON [AvaliableTariffs] TO [ShopAssistant];
+GRANT SELECT ON [UnlimitedServices] TO [ShopAssistant];
+GRANT EXECUTE ON [ChooseTariff] TO [ShopAssistant];
+
+-- SalesAnalytic
+GRANT SELECT ON [Subscriber] TO [SalesAnalytic];
+GRANT SELECT ON [Tariff] TO [SalesAnalytic];
+GRANT SELECT ON [Sellings] TO [SalesAnalytic];
+GRANT SELECT ON [Billings] TO [SalesAnalytic];
+GRANT SELECT ON [Traffic] TO [SalesAnalytic];
+GRANT SELECT ON [UnlimitedServices] TO [SalesAnalytic];
+GRANT SELECT ON [Package] TO [SalesAnalytic];
+GRANT EXECUTE ON [CreateSellingsSummary] TO [SalesAnalytic];
+GRANT EXECUTE ON [SalesReportByCohorts] TO [SalesAnalytic];
+
+-- MarketingManager
+GRANT SELECT ON [Subscriber] TO [MarketingManager];
+GRANT SELECT ON [HomeAddress] TO [MarketingManager];
+GRANT SELECT, UPDATE, INSERT, DELETE ON [Tariff] TO [MarketingManager];
+GRANT SELECT ON [Sellings] TO [MarketingManager];
+GRANT SELECT ON [Billings] TO [MarketingManager];
+GRANT SELECT ON [Traffic] TO [MarketingManager];
+GRANT SELECT, UPDATE, INSERT, DELETE ON [UnlimitedServices] TO [MarketingManager];
+GRANT SELECT ON [Package] TO [MarketingManager];
+GRANT EXECUTE ON [CreateSellingsSummary] TO [MarketingManager];
+GRANT EXECUTE ON [UpdateTariffGrid] TO [MarketingManager];
+GRANT EXECUTE ON [ChooseTariff] TO [MarketingManager];
+GRANT EXECUTE ON [SalesReportByCohorts] TO [MarketingManager];
 
 
 
