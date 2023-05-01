@@ -541,6 +541,18 @@ BEGIN
 END
 GO
 
+
+/* Views */
+CREATE VIEW SubscribersInfo
+AS SELECT sub_phone_number, sub_name, sub_tariff, sub_joining_date, sub_email, sub_balance, sub_passport,
+ppt_issued_by, ppt_issued_date, ppt_division_code, ppt_date_of_birth, ppt_gender,
+adr_region, adr_city, adr_locality, adr_street, adr_home, adr_apartment
+FROM [Subscriber]
+JOIN [Passport] ON sub_passport = ppt_series_number
+JOIN [HomeAddress] ON ppt_address = adr_id;
+GO
+
+
 /* Logins */
 CREATE LOGIN [emp_CEO]
 	WITH PASSWORD = 'PassGeneralDirector548',
@@ -622,15 +634,31 @@ ALTER ROLE [MarketingManager] ADD MEMBER [Analytic_Sviridov_AG];
 
 
 /* Privilege */
-GRANT SELECT, UPDATE, INSERT, DELETE ON [Subscriber] TO [CEO];
-GRANT SELECT, UPDATE, INSERT, DELETE ON [Passport] TO [CEO];
-GRANT SELECT, UPDATE, INSERT, DELETE ON [HomeAddress] TO [CEO];
-GRANT SELECT, UPDATE, INSERT, DELETE ON [Tariff] TO [CEO];
-GRANT SELECT, UPDATE, INSERT, DELETE ON [Sellings] TO [CEO];
-GRANT SELECT, UPDATE, INSERT, DELETE ON [Billings] TO [CEO];
-GRANT SELECT, UPDATE, INSERT, DELETE ON [Traffic] TO [CEO];
-GRANT SELECT, UPDATE, INSERT, DELETE ON [UnlimitedServices] TO [CEO];
-GRANT SELECT, UPDATE, INSERT, DELETE ON [Package] TO [CEO];
+-- CEO
+GRANT SELECT, UPDATE, INSERT, DELETE ON [Subscriber] TO [CEO] WITH GRANT OPTION;
+GRANT SELECT, UPDATE, INSERT, DELETE ON [Passport] TO [CEO] WITH GRANT OPTION;
+GRANT SELECT, UPDATE, INSERT, DELETE ON [HomeAddress] TO [CEO] WITH GRANT OPTION;
+GRANT SELECT, UPDATE, INSERT, DELETE ON [Tariff] TO [CEO] WITH GRANT OPTION;
+GRANT SELECT, UPDATE, INSERT, DELETE ON [Sellings] TO [CEO] WITH GRANT OPTION;
+GRANT SELECT, UPDATE, INSERT, DELETE ON [Billings] TO [CEO] WITH GRANT OPTION;
+GRANT SELECT, UPDATE, INSERT, DELETE ON [Traffic] TO [CEO] WITH GRANT OPTION;
+GRANT SELECT, UPDATE, INSERT, DELETE ON [UnlimitedServices] TO [CEO] WITH GRANT OPTION;
+GRANT SELECT, UPDATE, INSERT, DELETE ON [Package] TO [CEO] WITH GRANT OPTION;
+GRANT EXECUTE ON [CreateDetailing] TO [CEO] WITH GRANT OPTION;
+GRANT EXECUTE ON [CreateSellingsSummary] TO [CEO] WITH GRANT OPTION;
+GRANT EXECUTE ON [UpdateTariffGrid] TO [CEO] WITH GRANT OPTION;
+GRANT EXECUTE ON [ChooseTariff] TO [CEO] WITH GRANT OPTION;
+GRANT EXECUTE ON [SalesReportByCohorts] TO [CEO] WITH GRANT OPTION;
+
+-- Cashier
+GRANT SELECT, UPDATE, INSERT, DELETE ON [Subscriber] TO [Cashier];
+GRANT SELECT, UPDATE, INSERT, DELETE ON [Passport] TO [Cashier];
+GRANT SELECT, UPDATE, INSERT, DELETE ON [HomeAddress] TO [Cashier];
+GRANT SELECT ON [Tariff] TO [Cashier];
+GRANT INSERT ON [Sellings] TO [Cashier];
+GRANT INSERT ON [Billings] TO [Cashier];
+GRANT EXECUTE ON [CreateDetailing] TO [Cashier];
+
 
 
 /* Transparent encryption */
