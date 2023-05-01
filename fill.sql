@@ -159,6 +159,7 @@ VALUES
 	ENCRYPTBYKEY(KEY_GUID('SymKey_Encr_Address'), N'Нижняя Казачья'), 
 	ENCRYPTBYKEY(KEY_GUID('SymKey_Encr_Address'), N'8в'), 
 	NULL);
+CLOSE SYMMETRIC KEY SymKey_Encr_Address;
 
 
 INSERT INTO Passport(ppt_series_number, ppt_issued_by, ppt_issued_date, ppt_division_code, ppt_date_of_birth, ppt_address, ppt_gender)

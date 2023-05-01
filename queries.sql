@@ -26,6 +26,7 @@ CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_street)) AS adr_street,
 CONVERT(NVARCHAR(10), DECRYPTBYKEY(adr_home)) AS adr_home,
 CONVERT(NVARCHAR(5), DECRYPTBYKEY(adr_apartment)) AS adr_apartment
 FROM HomeAddress;
+CLOSE SYMMETRIC KEY SymKey_Encr_Address;
 
 
 -- Sorting tariffs according to popularity
