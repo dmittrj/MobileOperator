@@ -568,6 +568,15 @@ FROM [Tariff]
 WHERE tar_archived = 0;
 GO
 
+CREATE VIEW AnonymousSubscribers AS
+SELECT
+    REPLACE(sub_phone_number, LEFT(sub_phone_number, 1), '*') AS PhoneNumber,
+    REPLACE(sub_name, LEFT(sub_name, 1), '*') AS SubName,
+    sub_tariff
+FROM
+    Subscriber
+GO
+
 
 /* Logins */
 CREATE LOGIN [emp_CEO]
@@ -624,7 +633,7 @@ CREATE USER [Analytic_Sviridov_AG] FOR LOGIN [emp_Management_Marketing2];
 
 
 /* Roles */
-CREATE ROLE [CEO];
+DROP ROLE [CEO];
 ALTER ROLE [CEO] ADD MEMBER [CEO_Vinogradov_PE];
 ALTER ROLE [CEO] ADD MEMBER [CEO_Gromovoy_IP];
 
