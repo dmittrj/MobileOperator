@@ -568,13 +568,22 @@ FROM [Tariff]
 WHERE tar_archived = 0;
 GO
 
+DROP VIEW AnonymousSubscribers;
+GO
 CREATE VIEW AnonymousSubscribers AS
 SELECT
-    REPLACE(sub_phone_number, LEFT(sub_phone_number, 1), '*') AS PhoneNumber,
-    REPLACE(sub_name, LEFT(sub_name, 1), '*') AS SubName,
-    sub_tariff
-FROM
-    Subscriber
+	SUBSTRING(sub_phone_number, 1, 2) + '********' AS sub_phone_number,
+	SUBSTRING(sub_name,1,2) + '**********' AS sub_name,
+	CONCAT('****', SUBSTRING(sub_passport,5, LEN(sub_passport) - 4), '***') AS sub_passport,
+	sub_joining_date,
+	sub_tariff,
+	sub_balance,
+	ppt_gender,
+	adr_region,
+	adr_city
+FROM [Subscriber]
+JOIN [Passport] ON sub_passport = ppt_series_number
+JOIN [HomeAddress] ON ppt_address = adr_id;
 GO
 
 
@@ -669,6 +678,7 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON [Billings] TO [CEO] WITH GRANT OPTION;
 GRANT SELECT, UPDATE, INSERT, DELETE ON [Traffic] TO [CEO] WITH GRANT OPTION;
 GRANT SELECT, UPDATE, INSERT, DELETE ON [UnlimitedServices] TO [CEO] WITH GRANT OPTION;
 GRANT SELECT, UPDATE, INSERT, DELETE ON [Package] TO [CEO] WITH GRANT OPTION;
+GRANT SELECT ON [SubscribersInfo] TO [CEO] WITH GRANT OPTION;
 GRANT EXECUTE ON [CreateDetailing] TO [CEO] WITH GRANT OPTION;
 GRANT EXECUTE ON [CreateSellingsSummary] TO [CEO] WITH GRANT OPTION;
 GRANT EXECUTE ON [UpdateTariffGrid] TO [CEO] WITH GRANT OPTION;
@@ -679,6 +689,7 @@ GRANT EXECUTE ON [SalesReportByCohorts] TO [CEO] WITH GRANT OPTION;
 GRANT SELECT, UPDATE, INSERT, DELETE ON [Subscriber] TO [Cashier];
 GRANT SELECT, UPDATE, INSERT, DELETE ON [Passport] TO [Cashier];
 GRANT SELECT, UPDATE, INSERT, DELETE ON [HomeAddress] TO [Cashier];
+GRANT SELECT ON [SubscribersInfo] TO [Cashier];
 GRANT SELECT ON [AvaliableTariffs] TO [Cashier];
 GRANT INSERT ON [Sellings] TO [Cashier];
 GRANT INSERT ON [Billings] TO [Cashier];
@@ -688,12 +699,13 @@ GRANT EXECUTE ON [CreateDetailing] TO [Cashier];
 GRANT SELECT ON [Subscriber] TO [ShopAssistant];
 GRANT SELECT ON [Passport] TO [ShopAssistant];
 GRANT SELECT ON [HomeAddress] TO [ShopAssistant];
+GRANT SELECT ON [SubscribersInfo] TO [ShopAssistant]
 GRANT SELECT ON [AvaliableTariffs] TO [ShopAssistant];
 GRANT SELECT ON [UnlimitedServices] TO [ShopAssistant];
 GRANT EXECUTE ON [ChooseTariff] TO [ShopAssistant];
 
 -- SalesAnalytic
-GRANT SELECT ON [Subscriber] TO [SalesAnalytic];
+GRANT SELECT ON [AnonymousSubscribers] TO [SalesAnalytic];
 GRANT SELECT ON [Tariff] TO [SalesAnalytic];
 GRANT SELECT ON [Sellings] TO [SalesAnalytic];
 GRANT SELECT ON [Billings] TO [SalesAnalytic];
