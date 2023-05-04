@@ -57,7 +57,7 @@ CREATE TABLE Subscriber (
 	[sub_tariff] SMALLSTRING NULL DEFAULT NULL,
 	[sub_balance] SMALLMONEY NOT NULL DEFAULT 0,
 
-	[sub_email] BIGSTRING NULL DEFAULT NULL
+	[sub_email] BIGSTRING NULL DEFAULT NULL CONSTRAINT ch_email CHECK ([sub_email] LIKE '%_@__%.__%'),
 );
 
 
