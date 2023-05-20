@@ -729,6 +729,12 @@ GRANT EXECUTE ON [UpdateTariffGrid] TO [MarketingManager];
 GRANT EXECUTE ON [ChooseTariff] TO [MarketingManager];
 GRANT EXECUTE ON [SalesReportByCohorts] TO [MarketingManager];
 
+DENY SELECT ON [Billings] TO [Analytic_Petrov_DS];
+DENY INSERT ON [Sellings] TO [Sales_Kirillova_VA];
+
+REVOKE DELETE ON [Subscriber] TO [Cashier];
+REVOKE INSERT, DELETE ON [Traffic] TO [CEO] CASCADE;
+
 
 
 /* Transparent encryption */
