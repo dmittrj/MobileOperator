@@ -441,29 +441,32 @@ AS
 BEGIN
 	OPEN SYMMETRIC KEY SymKey_Encr_Address
 	DECRYPTION BY PASSWORD = 'AddressSymmetricKeyPassword123';
-	SELECT CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_city)) AS city, COUNT(*) AS sellings_number
+	SELECT CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_city)) AS city, SUM(tar_cost) AS sellings_cost
 	FROM [Subscriber]
 	JOIN [Passport] ON ppt_series_number = sub_passport
 	JOIN [HomeAddress] ON adr_id = ppt_address
 	JOIN [Sellings] ON sll_subscriber = sub_phone_number
+	JOIN [Tariff] ON tar_name = sll_tariff
 	GROUP BY CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_city))
-	ORDER BY sellings_number DESC;
+	ORDER BY sellings_cost DESC;
 
-	SELECT CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_region)) AS region, COUNT(*) AS sellings_number
+	SELECT CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_region)) AS region, SUM(tar_cost) AS sellings_cost
 	FROM [Subscriber]
 	JOIN [Passport] ON ppt_series_number = sub_passport
 	JOIN [HomeAddress] ON adr_id = ppt_address
 	JOIN [Sellings] ON sll_subscriber = sub_phone_number
+	JOIN [Tariff] ON tar_name = sll_tariff
 	GROUP BY CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_region))
-	ORDER BY sellings_number DESC;
+	ORDER BY sellings_cost DESC;
 
-	SELECT CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_locality)) AS locality, COUNT(*) AS sellings_number
+	SELECT CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_locality)) AS locality, SUM(tar_cost) AS sellings_cost
 	FROM [Subscriber]
 	JOIN [Passport] ON ppt_series_number = sub_passport
 	JOIN [HomeAddress] ON adr_id = ppt_address
 	JOIN [Sellings] ON sll_subscriber = sub_phone_number
+	JOIN [Tariff] ON tar_name = sll_tariff
 	GROUP BY CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_locality))
-	ORDER BY sellings_number DESC;
+	ORDER BY sellings_cost DESC;
 END;
 GO
 EXECUTE CreateSellingsMap;
