@@ -589,7 +589,7 @@ BEGIN
 END
 GO
 
-DROP TRIGGER trig_passportInput
+
 CREATE OR ALTER TRIGGER trig_passportInput ON [Passport]
 AFTER INSERT
 AS
