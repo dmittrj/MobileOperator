@@ -642,7 +642,7 @@ CREATE USER [Analytic_Sviridov_AG] FOR LOGIN [emp_Management_Marketing2];
 
 
 /* Roles */
-DROP ROLE [CEO];
+CREATE ROLE [CEO];
 ALTER ROLE [CEO] ADD MEMBER [CEO_Vinogradov_PE];
 ALTER ROLE [CEO] ADD MEMBER [CEO_Gromovoy_IP];
 
