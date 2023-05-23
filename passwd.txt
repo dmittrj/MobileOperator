@@ -19,3 +19,5 @@ Analytic Department
 Management Department
   login                       passwd
 * emp_Management_Marketing1   PassMarketingMenedzher302
+
+DESKTOP-8STCFI2
