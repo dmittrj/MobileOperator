@@ -589,6 +589,24 @@ BEGIN
 END
 GO
 
+DROP TRIGGER trig_passportInput
+CREATE OR ALTER TRIGGER trig_passportInput ON [Passport]
+AFTER INSERT
+AS
+BEGIN
+  IF EXISTS
+  (
+    SELECT *
+    FROM inserted
+    WHERE ppt_date_of_birth > DATEADD(year, -14, CAST(ppt_issued_date AS VARCHAR))
+  )
+  BEGIN
+    RAISERROR('Невозможно вставить строку. Паспорт должен быть выдан как минимум в 14 лет.', 16, 1);
+    ROLLBACK TRANSACTION;
+  END;
+END;
+GO
+
 
 /* Views */
 CREATE VIEW SubscribersInfo
