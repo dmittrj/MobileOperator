@@ -436,6 +436,38 @@ BEGIN
 END;
 GO
 
+CREATE OR ALTER PROCEDURE CreateSellingsMap
+AS
+BEGIN
+	OPEN SYMMETRIC KEY SymKey_Encr_Address
+	DECRYPTION BY PASSWORD = 'AddressSymmetricKeyPassword123';
+	SELECT CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_city)) AS city, COUNT(*) AS sellings_number
+	FROM [Subscriber]
+	JOIN [Passport] ON ppt_series_number = sub_passport
+	JOIN [HomeAddress] ON adr_id = ppt_address
+	JOIN [Sellings] ON sll_subscriber = sub_phone_number
+	GROUP BY CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_city))
+	ORDER BY sellings_number DESC;
+
+	SELECT CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_region)) AS region, COUNT(*) AS sellings_number
+	FROM [Subscriber]
+	JOIN [Passport] ON ppt_series_number = sub_passport
+	JOIN [HomeAddress] ON adr_id = ppt_address
+	JOIN [Sellings] ON sll_subscriber = sub_phone_number
+	GROUP BY CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_region))
+	ORDER BY sellings_number DESC;
+
+	SELECT CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_locality)) AS locality, COUNT(*) AS sellings_number
+	FROM [Subscriber]
+	JOIN [Passport] ON ppt_series_number = sub_passport
+	JOIN [HomeAddress] ON adr_id = ppt_address
+	JOIN [Sellings] ON sll_subscriber = sub_phone_number
+	GROUP BY CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_locality))
+	ORDER BY sellings_number DESC;
+END;
+GO
+EXECUTE CreateSellingsMap;
+
 
 CREATE OR ALTER TRIGGER trig_trafficInput ON [Traffic]
 AFTER INSERT
@@ -568,7 +600,6 @@ FROM [Tariff]
 WHERE tar_archived = 0;
 GO
 
-DROP VIEW AnonymousSubscribers;
 GO
 CREATE VIEW AnonymousSubscribers AS
 SELECT
