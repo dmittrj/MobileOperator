@@ -436,7 +436,7 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE CreateSellingsMap
+CREATE OR ALTER PROCEDURE CreateSellingsMap (@date_from DATE, @date_to DATE)
 AS
 BEGIN
 	OPEN SYMMETRIC KEY SymKey_Encr_Address
@@ -447,6 +447,7 @@ BEGIN
 	JOIN [HomeAddress] ON adr_id = ppt_address
 	JOIN [Sellings] ON sll_subscriber = sub_phone_number
 	JOIN [Tariff] ON tar_name = sll_tariff
+	WHERE [sll_date] BETWEEN @date_from AND @date_to
 	GROUP BY CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_city))
 	ORDER BY sellings_cost DESC;
 
@@ -456,6 +457,7 @@ BEGIN
 	JOIN [HomeAddress] ON adr_id = ppt_address
 	JOIN [Sellings] ON sll_subscriber = sub_phone_number
 	JOIN [Tariff] ON tar_name = sll_tariff
+	WHERE [sll_date] BETWEEN @date_from AND @date_to
 	GROUP BY CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_region))
 	ORDER BY sellings_cost DESC;
 
@@ -465,11 +467,12 @@ BEGIN
 	JOIN [HomeAddress] ON adr_id = ppt_address
 	JOIN [Sellings] ON sll_subscriber = sub_phone_number
 	JOIN [Tariff] ON tar_name = sll_tariff
+	WHERE [sll_date] BETWEEN @date_from AND @date_to
 	GROUP BY CONVERT(NVARCHAR(64), DECRYPTBYKEY(adr_locality))
 	ORDER BY sellings_cost DESC;
 END;
 GO
-EXECUTE CreateSellingsMap;
+EXECUTE CreateSellingsMap '12/01/2020', '12/05/2020';
 
 
 CREATE OR ALTER TRIGGER trig_trafficInput ON [Traffic]
