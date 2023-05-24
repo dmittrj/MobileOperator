@@ -472,7 +472,6 @@ BEGIN
 	ORDER BY sellings_cost DESC;
 END;
 GO
-EXECUTE CreateSellingsMap '12/01/2020', '12/05/2020';
 
 
 CREATE OR ALTER TRIGGER trig_trafficInput ON [Traffic]
@@ -527,7 +526,7 @@ BEGIN
 			SET pck_internet = 0 WHERE pck_subscriber = @ins_subscriber;
 		END
 	END
-END;
+END
 GO
 
 CREATE OR ALTER TRIGGER trig_tariffInput ON [Tariff]
@@ -605,6 +604,21 @@ BEGIN
     ROLLBACK TRANSACTION;
   END;
 END;
+GO
+
+
+CREATE TRIGGER trig_subscriberInput
+ON Subscriber
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    IF (SELECT COUNT(*) FROM Inserted WHERE sub_joining_date < (SELECT ppt_issued_date FROM Passport WHERE ppt_series_number = Inserted.sub_passport)) > 0
+    BEGIN
+        RAISERROR ('Дата подключения абонента не может быть раньше даты выдачи паспорта', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+END
 GO
 
 
