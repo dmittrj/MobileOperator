@@ -832,8 +832,12 @@ GRANT EXECUTE ON [SalesReportByCohorts] TO [MarketingManager];
 
 DENY SELECT ON [Billings] TO [Analytic_Petrov_DS];
 DENY INSERT ON [Sellings] TO [Sales_Kirillova_VA];
+DENY INSERT ON [Tariff] TO [Cashier];
+DENY SELECT, INSERT, UPDATE, DELETE ON [Package] TO [CEO];
 
 REVOKE DELETE ON [Subscriber] TO [Cashier];
+REVOKE SELECT ON [Billings] TO [Analytic_Petrov_DS];
+REVOKE SELECT, INSERT, UPDATE, DELETE ON [Package] TO [CEO];
 REVOKE INSERT, DELETE ON [Traffic] TO [CEO] CASCADE;
 
 
