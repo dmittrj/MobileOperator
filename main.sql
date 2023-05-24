@@ -474,6 +474,26 @@ END;
 GO
 
 
+CREATE OR ALTER PROCEDURE GetChurnRate (@date_from DATE, @date_to DATE)
+AS
+BEGIN
+	SELECT tar AS Tariff, CAST(q1.u AS FLOAT) / q2.d AS result
+	FROM
+	(SELECT start_tariff, COUNT(*) AS u FROM
+	(SELECT *, dbo.getTariff(sub_phone_number, @date_from) AS start_tariff, dbo.getTariff(sub_phone_number, @date_to) AS finish_tariff 
+	FROM Subscriber) AS q
+	WHERE start_tariff IS NOT NULL AND start_tariff != finish_tariff
+	GROUP BY start_tariff, finish_tariff) AS q1,
+
+	(SELECT start_tariff AS tar, COUNT(*) AS d FROM
+	(SELECT *, dbo.getTariff(sub_phone_number, @date_from) AS start_tariff, dbo.getTariff(sub_phone_number, @date_to) AS finish_tariff 
+	FROM Subscriber) AS q
+	WHERE start_tariff IS NOT NULL
+	GROUP BY start_tariff) AS q2
+END;
+GO
+
+
 CREATE OR ALTER TRIGGER trig_trafficInput ON [Traffic]
 AFTER INSERT
 AS
@@ -607,7 +627,7 @@ END;
 GO
 
 
-CREATE TRIGGER trig_subscriberInput
+CREATE OR ALTER TRIGGER trig_subscriberInput
 ON Subscriber
 AFTER INSERT, UPDATE
 AS
@@ -618,6 +638,18 @@ BEGIN
         ROLLBACK TRANSACTION;
         RETURN;
     END
+END
+GO
+
+
+CREATE OR ALTER TRIGGER trig_unlimitedServicesInput ON UnlimitedServices
+AFTER INSERT
+AS
+BEGIN
+	IF (SELECT COUNT(*) FROM inserted WHERE unl_service NOT LIKE '%www%.%') > 0
+	BEGIN
+		UPDATE UnlimitedServices SET unl_service = 'https://www.' + unl_service WHERE unl_service NOT LIKE '%www%.%'
+	END
 END
 GO
 
