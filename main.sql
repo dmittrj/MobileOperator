@@ -494,6 +494,30 @@ END;
 GO
 
 
+CREATE OR ALTER PROCEDURE WithdrawMoney (@date_withdraw DATE)
+AS
+BEGIN
+	UPDATE Subscriber
+	SET sub_balance = sub_balance - Tariff.tar_cost
+	FROM Subscriber
+	INNER JOIN Tariff ON Subscriber.sub_tariff = Tariff.tar_name
+	INNER JOIN Package ON Subscriber.sub_phone_number = Package.pck_subscriber
+	WHERE
+		(
+			Package.pck_billing_date = DAY(@date_withdraw)
+			OR
+			(
+				TRY_CONVERT(DATE, CONCAT(pck_billing_date, '-', DATEPART(MONTH, @date_withdraw), '-', DATEPART(YEAR, @date_withdraw))) IS NULL
+				AND
+				DATEPART(month, @date_withdraw) != DATEPART(month, DATEADD(day, 1, @date_withdraw))
+			)
+		)
+		AND
+		Subscriber.sub_balance >= Tariff.tar_cost;
+END;
+GO
+
+
 CREATE OR ALTER TRIGGER trig_trafficInput ON [Traffic]
 AFTER INSERT
 AS
