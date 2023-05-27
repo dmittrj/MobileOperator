@@ -512,8 +512,6 @@ BEGIN
 				DATEPART(month, @date_withdraw) != DATEPART(month, DATEADD(day, 1, @date_withdraw))
 			)
 		)
-		AND
-		Subscriber.sub_balance >= Tariff.tar_cost;
 END;
 GO
 
