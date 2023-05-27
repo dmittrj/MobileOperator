@@ -686,13 +686,14 @@ JOIN [Passport] ON sub_passport = ppt_series_number
 JOIN [HomeAddress] ON ppt_address = adr_id;
 GO
 
+
 CREATE VIEW AvaliableTariffs
 AS SELECT *
 FROM [Tariff]
 WHERE tar_archived = 0;
 GO
 
-GO
+
 CREATE VIEW AnonymousSubscribers AS
 SELECT
 	SUBSTRING(sub_phone_number, 1, 2) + '********' AS sub_phone_number,
@@ -707,6 +708,16 @@ SELECT
 FROM [Subscriber]
 JOIN [Passport] ON sub_passport = ppt_series_number
 JOIN [HomeAddress] ON ppt_address = adr_id;
+GO
+
+
+CREATE VIEW SubscribersNegativeBalance AS
+SELECT
+	sub_phone_number, sub_name, sub_balance, sub_email
+FROM
+	[Subscriber]
+WHERE
+	sub_balance < 0
 GO
 
 
