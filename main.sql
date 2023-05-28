@@ -818,6 +818,8 @@ GRANT EXECUTE ON [CreateSellingsSummary] TO [CEO] WITH GRANT OPTION;
 GRANT EXECUTE ON [UpdateTariffGrid] TO [CEO] WITH GRANT OPTION;
 GRANT EXECUTE ON [ChooseTariff] TO [CEO] WITH GRANT OPTION;
 GRANT EXECUTE ON [SalesReportByCohorts] TO [CEO] WITH GRANT OPTION;
+GRANT EXECUTE ON [CreateSellingsMap] TO [CEO] WITH GRANT OPTION;
+GRANT EXECUTE ON [GetChurnRate] TO [CEO] WITH GRANT OPTION;
 
 -- Cashier
 GRANT SELECT, UPDATE, INSERT, DELETE ON [Subscriber] TO [Cashier];
@@ -848,6 +850,8 @@ GRANT SELECT ON [UnlimitedServices] TO [SalesAnalytic];
 GRANT SELECT ON [Package] TO [SalesAnalytic];
 GRANT EXECUTE ON [CreateSellingsSummary] TO [SalesAnalytic];
 GRANT EXECUTE ON [SalesReportByCohorts] TO [SalesAnalytic];
+GRANT EXECUTE ON [CreateSellingsMap] TO [SalesAnalytic];
+GRANT EXECUTE ON [GetChurnRate] TO [SalesAnalytic];
 
 -- MarketingManager
 GRANT SELECT ON [Subscriber] TO [MarketingManager];
@@ -862,6 +866,8 @@ GRANT EXECUTE ON [CreateSellingsSummary] TO [MarketingManager];
 GRANT EXECUTE ON [UpdateTariffGrid] TO [MarketingManager];
 GRANT EXECUTE ON [ChooseTariff] TO [MarketingManager];
 GRANT EXECUTE ON [SalesReportByCohorts] TO [MarketingManager];
+GRANT EXECUTE ON [CreateSellingsMap] TO [MarketingManager];
+GRANT EXECUTE ON [GetChurnRate] TO [MarketingManager];
 
 DENY SELECT ON [Billings] TO [Analytic_Petrov_DS];
 DENY INSERT ON [Sellings] TO [Sales_Kirillova_VA];
