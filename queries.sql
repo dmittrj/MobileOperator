@@ -71,3 +71,15 @@ EXECUTE CreateSellingsSummary '01/02/2020', '01/05/2020';
 EXECUTE UpdateTariffGrid;
 EXECUTE ChooseTariff 1000, 500, 5, 101;
 EXEC SalesReportByCohorts '01/01/2019', '31/12/2023', 30;
+
+SELECT
+    r.name AS RoleName,
+    u.name AS UserName
+FROM
+    sys.database_role_members AS m
+    JOIN sys.database_principals AS r ON m.role_principal_id = r.principal_id
+    JOIN sys.database_principals AS u ON m.member_principal_id = u.principal_id
+WHERE
+    r.type = 'R'
+ORDER BY
+    r.name, u.name;
